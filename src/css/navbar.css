@@ -1,0 +1,156 @@
+.landing-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* background-color: #0bbfbf; */
+  background: linear-gradient(to bottom, #fdfdfde5, #088F8F);
+  box-sizing: border-box;
+}
+.landing-page-header-solid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* background-color: #0bbfbf; */
+  background: linear-gradient(to bottom, #088F8F, rgb(105, 160, 158));
+  box-sizing: border-box;
+  padding-bottom: .5em;
+}
+
+.landing-page-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1em;
+  padding: 0.1em;
+  padding-right: 1em;
+  box-sizing: border-box;
+}
+
+.landing-page-nav li:last-child {
+  margin-right: 0;
+}
+
+.landing-page-nav ul {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 0;
+}
+
+.nav-links {
+  display: flex;
+  width: 100%;
+  list-style: none;
+}
+.email-576{
+  display: none;
+}
+.nav-links.open {
+  display: flex;
+  width: 6em;
+}
+
+.nav-links li {
+  margin-right: 20px;
+  font-family: "Helvetica";
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+.nav-links a {
+  text-align: center;
+}
+
+.landing-page-title {
+  font-family: "Pacifico";
+  font-weight: bold;
+  font-size: 2em;
+  color: #be1f47;
+  margin-left: 1em;
+  flex-shrink: 1;
+  width: 50%;
+}
+
+.hamburger {
+  display: none;
+}
+
+.line {
+  width: 25px;
+  height: 3px;
+  background-color: #000;
+  margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .landing-page-nav {
+      position: relative;
+      z-index: 1;
+      padding: 25px;
+  }
+  
+  .landing-page-nav ul {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: #f2f2f2;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 10%;
+  }
+  
+  .landing-page-nav ul li {
+      margin-bottom: 10px;
+  }
+  
+  .nav-links {
+      display: flex;
+      justify-content: flex-end;
+      list-style: none;
+  }
+  
+  .nav-links li {
+      margin-right: 20px;
+      font-family: "Helvetica";
+      font-size: 16px;
+      font-weight: bold;
+  }
+  
+  .hamburger {
+      display: block;
+      cursor: pointer;
+  }
+  
+  .line {
+      width: 25px;
+      height: 3px;
+      background-color: #000;
+      margin: 5px 0;
+  }
+  
+  .open {
+      display: flex;
+      flex-direction: column;
+      height: 15vh;
+  }
+}
+@media (max-width: 576px) {
+  .email{
+    display: none;
+  }
+  .email-576{
+    color: white;
+    display: block;
+    text-align: center;
+    background-color: #088F8F;
+    width: 100%;
+    padding: 2px;
+  }
+  .landing-page-title {
+    font-size: 1.5em;
+  }
+}

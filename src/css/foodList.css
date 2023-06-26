@@ -1,0 +1,93 @@
+.food-list {
+    /* border: 1px solid gray; */
+    background-color: white;
+    border-radius: 4px;
+    height: fit-content;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+   
+  }
+  .list-color0{
+    background-color: rgba(117, 128, 146, 0.8);
+  }
+  .list-color1{
+    background-color: rgba(117, 128, 146, 0.8);
+  }
+  .list-color2{
+    background-color: rgba(6, 90, 224, 0.8);
+  }
+  .list-color3{
+    background-color: rgba(117, 128, 146, 0.8);
+  }
+  .list-color4{
+    background-color: rgba(117, 128, 146, 0.8);
+  }
+  .list-color5{
+    background-color: rgba(117, 128, 146, 0.8);
+  }
+  .list-color6{
+    background-color: rgba(117, 128, 146, 0.8);
+  }
+
+  .inactive-list-titles{
+    display: flex;
+    justify-content: center;
+    color: azure;
+    padding: .3em 0;
+    background-color: rgba(117, 128, 146, 0.8);
+  }
+  .inactive{
+    background-color: #0bbfbf;
+  }
+  .list-title{
+    padding: .2em 0;
+    padding-left: 1.5em;
+    margin-top: .1em;
+    font-weight:bold;
+    color: rgba(255, 255, 255, 0.87);
+  }
+  .list-icon-produce{
+    color: rgba(0, 128, 0, 1);
+  }
+  .draggable-area{
+    position: absolute;
+    top: .2em;
+  }
+  .draggable-dots{
+    fill: white;
+  }
+
+.food-item {
+    display: flex;
+    align-items: center;
+    padding: .1em;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+  }
+  .food-item:first-child {
+    /* margin-top: .7em; */
+  }
+  
+  .checkbox-container {
+    margin-right: 10px;
+  }
+  
+  .checkbox-input {
+    width: 1.2em;
+    height: 1.2em;
+  }
+  
+  .food-details {
+    flex-grow: 1;
+  }
+  
+  .food-name {
+    /* font-weight:600; */
+    /* margin-bottom: 5px; */
+    font-size:medium;
+  }
+  
+  .food-type,
+  .food-duration {
+    font-size: 12px;
+    color: #666;
+  }

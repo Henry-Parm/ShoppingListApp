@@ -1,0 +1,56 @@
+
+.landing-page-hero img{
+    max-width: 90%;
+    min-width: 90%;
+    height: auto;
+    right: 0;
+    padding: 1em 0em;
+    position: absolute;
+  }
+  .landing-page-hero{
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-image: url('../assets/images/mainPageImage.jpg');
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+    min-height: 200px;
+  }
+  .input-container-landing{
+    margin-top: 14em;
+    display: flex;
+    flex-direction: row;
+  }
+  .overlay{
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); 
+    color: #fff; 
+    text-align: center; 
+    padding: 25px;
+    max-width: 45vw;
+  }
+  @media (max-width: 768px) {
+    .landing-page-hero {
+      height: auto;
+    }
+    .overlay {
+      display: none;
+    }
+    
+  }
+  @media (max-width: 576px) {
+    .input-container-landing{
+      margin-top: 0em;
+      display: flex;
+      flex-direction: column;
+    }
+  }

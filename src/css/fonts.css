@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'Pacifico';
+    src: url('../assets/fonts/Pacifico-Regular.ttf') format('truetype');
+    /* Add more font weights and styles if available */
+    /* src: url('../path-to-font/YourFont-Bold.ttf') format('truetype');
+       src: url('../path-to-font/YourFont-Italic.ttf') format('truetype'); */
+  }

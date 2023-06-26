@@ -1,0 +1,161 @@
+.input-overlay {
+  position: absolute;
+  top: 5%;
+  left: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.overlay-content {
+  background-color: white;
+  border-radius: 5px;
+  border: 2px solid blue;
+  margin-bottom: 10em;
+}
+.outer-div{
+  display: flex;
+  flex-direction: column;
+  width: auto;
+}
+.add-food-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: white;
+  align-items: center;
+  width: 35em; 
+}
+.checkboxText{
+  color: black;
+  display: inline-block;
+}
+.checkbox-container{
+  display: flex;
+  flex-direction: row;
+}
+.type-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.select-field{
+  width: 10em;
+}
+.duration-container{
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+  justify-content: center;
+}
+.name-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: .5em;
+  position: relative;
+}
+
+.add-food-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.add-food-form label {
+  font-weight: bold;
+  color: black;
+  width: auto; 
+  margin-right: .5em;
+}
+.submit-food-button{
+  width: 10em;
+  background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    align-self: center;
+    height: 2.5em;
+}
+
+.add-food-form input[type="text"] {
+  /* width: calc(100% - 80px); */
+  border-radius: 5px;
+  border: 1px solid gray;
+  width: 10em;
+}
+.input-number-field{
+  appearance: textfield;
+  width: 3em;
+}
+/* Dropdown */
+
+.dropdown-menu{
+  position: absolute;
+  top: 80%;
+  left: 35%;
+  z-index: 2;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0;
+  list-style-type: none;
+}
+
+.dropdown-menu li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: lightgray;
+}
+
+@media (max-width: 768px) {
+  .add-food-form .form-group {
+    display: block;
+  }
+
+  .add-food-form input[type="checkbox"] {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+  .add-food-form {
+    width: 100%; 
+  }
+  
+  .input-overlay{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateX(0%); 
+  }
+  .overlay-content{
+    width: 100%;
+  }
+  
+}
+
+@media (max-width: 576px) {
+  .add-food-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .add-food-form input[type="text"] {
+    /* width: calc(100% - 80px); */
+    border-radius: 5px;
+    border: 1px solid gray;
+    width: 13em;
+  }
+  .type-container{
+    margin-bottom: 1em;
+  }
+}
