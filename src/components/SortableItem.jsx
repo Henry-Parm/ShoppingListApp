@@ -10,7 +10,7 @@ export function SortableItem(props) {
     transform: CSS.Transform.toString(transform),
     transition,
     position: "relative",
-    touchAction: "none"
+    touchAction: "none",
   };
 
   return (

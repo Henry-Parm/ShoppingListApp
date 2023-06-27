@@ -35,18 +35,17 @@ export default function FormElements({
             autoComplete="off"
           />
           {showDropdown && activeInputId === formInputs.id && (
-              <ul className="dropdown-menu">
-                {autofillOptions.map((option, index) => (
-                  <li
-                    key={index}
-                    className={"autofill-options"}
-                    onClick={() => handleAutofillOptionClick(option, id)}
-                  >
-                    {option}
-                  </li>
-                ))}
-              </ul>
-
+            <ul className="dropdown-menu">
+              {autofillOptions.map((option, index) => (
+                <li
+                  key={index}
+                  className={"autofill-options"}
+                  onClick={() => handleAutofillOptionClick(option, id)}
+                >
+                  {option}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
         <div className="type-container">

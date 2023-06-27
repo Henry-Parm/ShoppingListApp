@@ -3,17 +3,18 @@ import AddFoodItemsForm from "./AddFoodItemsForm";
 
 const AddFoodItemButton = ({ setLists, lists, activeListSize }) => {
   const [showOverlay, setShowOverlay] = useState(false);
+  const [showElement, setShowElement] = useState(false);
 
   const handleClick = () => {
+    setShowElement(true);
     setShowOverlay(true);
   };
 
   const handleCloseOverlay = () => {
-    setShowOverlay(false);
-  };
-
-  const handleSaveItem = () => {
-    setShowOverlay(false);
+    setShowElement(false);
+    setTimeout(() => {
+      setShowOverlay(false);
+    }, 300);
   };
 
   return (
@@ -21,21 +22,21 @@ const AddFoodItemButton = ({ setLists, lists, activeListSize }) => {
       <button className="menu-button" onClick={handleClick}>
         Add Item
       </button>
-      {showOverlay && (
-        <div className="input-overlay">
+      {showOverlay ? (
+        <div className={`input-overlay${showElement ? "" : " fade-out"}`}>
           <div className="overlay-content">
             <button className="close-button" onClick={handleCloseOverlay}>
               X
             </button>
             <AddFoodItemsForm
-              onSave={handleSaveItem}
+              onSave={handleCloseOverlay}
               setLists={setLists}
               lists={lists}
               activeListSize={activeListSize}
             />
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

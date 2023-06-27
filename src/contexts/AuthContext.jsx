@@ -21,25 +21,10 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userOrder, setUserOrder] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [logoutTimeout, setLogoutTimeout] = useState(null); // New state to store the logout timeout
-  const navigate = useNavigate() 
+  const navigate = useNavigate();
 
   const collectionRef = collection(database, "users");
-  const defaultOrder = [
-    "inactive"
-  ];
-  const startLogoutTimer = () => {
-    const timeout = setTimeout(() => {
-      logout();
-      alert("You have been logged out due to inactivity."); // Modify this as needed
-    }, TIMEOUT);
-
-    setLogoutTimeout(timeout);
-  };
-  const resetLogoutTimer = () => {
-    clearTimeout(logoutTimeout);
-    startLogoutTimer();
-  };
+  const defaultOrder = ["inactive"];
 
   const signup = async (email, firstName, password) => {
     try {
@@ -49,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       await addDoc(collectionRef, {
         email: email,
         order: defaultOrder,
-        name: firstName
+        name: firstName,
       });
     } catch (error) {
       // Handle errors
@@ -83,35 +68,43 @@ export const AuthProvider = ({ children }) => {
   };
 
   const googleProvider = new GoogleAuthProvider();
-//FIX THIS
+
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log("Signed in with Google successfully!");
       // Check if the user's email already exists in the database
-      const emailQuery = query(collectionRef, where("email", "==", result.user.email));
+      const emailQuery = query(
+        collectionRef,
+        where("email", "==", result.user.email)
+      );
       const querySnapshot = await getDocs(emailQuery);
       if (querySnapshot.docs.length === 0) {
         // Add the email to the database if it doesn't already exist
         addDoc(collectionRef, {
           email: result.user.email,
           order: defaultOrder,
-          name: result.user.displayName
+          name: result.user.displayName,
         });
       }
       navigate("/dashboard");
-      } catch (error) {
-        console.error(error);
-      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const logout = () => {
-    clearTimeout(logoutTimeout);
-    return signOut(auth);
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+      });
   };
 
   const getOrder = async (user) => {
-    if(user){
+    if (user) {
       const userQuery = query(
         collection(database, "users"),
         where("email", "==", user.email)

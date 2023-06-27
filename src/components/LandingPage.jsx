@@ -1,20 +1,20 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import "../css/landingPage.css";
 import Navbar from "./Navbar";
 import SignIn from "./SignIn";
 import CreateUser from "./CreateUser";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
-  const {currentUser} = useAuth()
-  const navigate = useNavigate()
-  
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if(currentUser){
+    if (currentUser) {
       navigate("/dashboard");
     }
-  }, [currentUser])
+  }, [currentUser]);
 
   return (
     <div>

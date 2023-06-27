@@ -12,7 +12,7 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
-  verticalListSortingStrategy
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { SortableItem } from "./SortableItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -36,7 +36,7 @@ export default function DashboardMiddle({
   setListsDragged,
 }) {
   const screenWidthMobile = window.innerWidth < 576;
-  
+
   const getListIcon = (listType) => {
     switch (listType) {
       case "snacks":
@@ -47,7 +47,7 @@ export default function DashboardMiddle({
       case "meats":
       case "meat":
         return faDrumstickBite;
-      case "deli" :
+      case "deli":
       case "cheese":
       case "cheeses":
         return faCheese;
@@ -90,7 +90,14 @@ export default function DashboardMiddle({
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={lists} strategy={screenWidthMobile ? verticalListSortingStrategy :  horizontalListSortingStrategy}>
+      <SortableContext
+        items={lists}
+        strategy={
+          screenWidthMobile
+            ? verticalListSortingStrategy
+            : horizontalListSortingStrategy
+        }
+      >
         <div className="middle">
           {lists.map((list, index) => {
             const listName = list[0];
@@ -98,7 +105,10 @@ export default function DashboardMiddle({
             if (listItems.length > 0 && listName !== "inactive") {
               return (
                 <SortableItem key={list} id={list}>
-                  <div className={`food-list list-color${index % 7}`} key={listName}>
+                  <div
+                    className={`food-list list-color${index % 7}`}
+                    key={listName}
+                  >
                     <div className="list-title">
                       <FontAwesomeIcon
                         icon={getListIcon(listName)}

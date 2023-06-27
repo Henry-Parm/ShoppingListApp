@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import FoodItem from "./FoodItem";
 
-const FoodItemList = ({ foodItems, handleItemSelection, selectedItems, isSorted }) => {
+const FoodItemList = ({
+  foodItems,
+  handleItemSelection,
+  selectedItems,
+  isSorted,
+}) => {
   const [isDragging, setIsDragging] = useState(false);
 
   const handleCheckboxChange = (item) => {
@@ -22,36 +27,37 @@ const FoodItemList = ({ foodItems, handleItemSelection, selectedItems, isSorted 
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
-  if(isSorted){
+  if (isSorted) {
     foodItems = [...foodItems].sort((a, b) => a.type.localeCompare(b.type));
   }
-  let previousType = '';
+  let previousType = "";
 
-return (
-  <div className="food-list">
-    {foodItems.map((item, index) => {
-      const { type } = item;
-      const shouldRenderType = type !== previousType;
-      previousType = type;
+  return (
+    <div className="food-list">
+      {foodItems.map((item, index) => {
+        const { type } = item;
+        const shouldRenderType = type !== previousType;
+        previousType = type;
 
-      return (
-        <React.Fragment key={index}>
-          {shouldRenderType && isSorted && <div className="inactive-list-titles">{type}</div>}
-          <FoodItem
-            item={item}
-            onCheckboxChange={handleCheckboxChange}
-            isSelected={selectedItems.includes(item)}
-            // dragging stuff
-            isDragging={isDragging}
-            handleMouseDown={handleMouseDown}
-            handleMouseUp={handleMouseUp}
-          />
-        </React.Fragment>
-      );
-    })}
-  </div>
-);
-
+        return (
+          <React.Fragment key={index}>
+            {shouldRenderType && isSorted && (
+              <div className="inactive-list-titles">{type}</div>
+            )}
+            <FoodItem
+              item={item}
+              onCheckboxChange={handleCheckboxChange}
+              isSelected={selectedItems.includes(item)}
+              // dragging stuff
+              isDragging={isDragging}
+              handleMouseDown={handleMouseDown}
+              handleMouseUp={handleMouseUp}
+            />
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
 };
 
 export default FoodItemList;

@@ -30,7 +30,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
 
   const fetchFoodItemNames = async (query) => {
     //lowers api calls. Modify as needed
-    if (query.length > 1 && query.length % 2 !== 0 ) {
+    if (query.length > 1 && query.length % 2 !== 0) {
       try {
         const response = await axios.get(
           "https://api.spoonacular.com/food/ingredients/autocomplete",
@@ -44,17 +44,16 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
           }
         );
         const foodItemNames = response.data.map((item) => item.name);
-        console.log('api called')
+        console.log("api called");
         setAutofillOptions(foodItemNames);
       } catch (error) {
         // Handle error scenarios
         setAutofillOptions([]);
         console.error("Error fetching food item names:", error);
       }
+    } else if (query.length < 1) {
+      setAutofillOptions([]);
     }
-    else if(query.length < 1){
-      setAutofillOptions([])
-    } 
   };
 
   const handleAutofillOptionClick = (option, setId) => {
@@ -132,8 +131,9 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
     const newItems = [];
     const updatedLists = inputSets.reduce(
       (lists, inputSet) => {
-        let lowerCaseType = ''
-        if(inputSet.type.value) lowerCaseType = inputSet.type.value.toLowerCase();
+        let lowerCaseType = "";
+        if (inputSet.type.value)
+          lowerCaseType = inputSet.type.value.toLowerCase();
         const newItem = {
           name: inputSet.name,
           type: lowerCaseType || "miscellaneous",
@@ -145,7 +145,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
           createdAt: serverTimestamp(),
         };
         newItems.push(newItem);
-        activeListSize.current += 1
+        activeListSize.current += 1;
         const listToUpdate = lists.find((list) => list[0] === newItem.type);
         if (listToUpdate) {
           listToUpdate[1].push(newItem);

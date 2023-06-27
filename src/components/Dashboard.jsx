@@ -28,13 +28,12 @@ const Dashboard = () => {
   const activeListSize = useRef(0);
   const inactiveListSize = useRef(0);
   const [lists, setLists] = useState([]);
-  // console.log(selectedItems)
+
   // console.log('activeListSize', activeListSize)
   // console.log('inactiveListSize', inactiveListSize)
 
   const handleItemSelection = (item) => {
     setSelectedItems((prevSelectedItems) => {
-      // console.log(prevSelectedItems)
       const isItemSelected = prevSelectedItems.includes(item);
       if (isItemSelected) {
         return prevSelectedItems.filter(
@@ -108,8 +107,6 @@ const Dashboard = () => {
     let i = 0;
     for (const list of newLists) {
       if (list[0] === type) {
-        // console.log(i);
-        // console.log('list' , list)
         return i;
       }
       i++;
@@ -121,8 +118,7 @@ const Dashboard = () => {
 
   //Saving order of items
   useEffect(() => {
-    const newUserOrder = lists.map((list) => list[0])
-   ;
+    const newUserOrder = lists.map((list) => list[0]);
     // Check if it's not the initial render
     if (isInitialRender.current >= 1) {
       // Call setUserOrder after a delay of 5 seconds if not currently dragging
@@ -169,7 +165,12 @@ const Dashboard = () => {
 
   return (
     <div>
-      <NavBar email={currentUser?.email} lists={lists} setLists={setLists} setUserOrder={setUserOrder}></NavBar>
+      <NavBar
+        email={currentUser?.email}
+        lists={lists}
+        setLists={setLists}
+        setUserOrder={setUserOrder}
+      ></NavBar>
       <div className="container">
         <DashboardLeft
           lists={lists}

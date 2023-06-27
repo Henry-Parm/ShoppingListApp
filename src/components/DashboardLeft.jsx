@@ -18,7 +18,7 @@ export default function DashboardLeft({
   selectedItems,
   setSelectedItems,
   activeListSize,
-  inactiveListSize
+  inactiveListSize,
 }) {
   const deletedSelected = () => {
     setLists((oldLists) => {
@@ -28,7 +28,9 @@ export default function DashboardLeft({
         let newListItems = listItems.map((item) => item);
         newListItems.forEach((item) => {
           if (selectedItems.includes(item)) {
-            (item.isActive) ? activeListSize.current -=1 : inactiveListSize.current -= 1
+            item.isActive
+              ? (activeListSize.current -= 1)
+              : (inactiveListSize.current -= 1);
             toDelete.push(item);
           }
         });
@@ -52,8 +54,8 @@ export default function DashboardLeft({
         if (listName === "inactive") {
           toInactive.forEach((item) => newListItems.push(item));
           toInactive = toInactive.map((item) => {
-            activeListSize.current -= 1
-            inactiveListSize.current +=1
+            activeListSize.current -= 1;
+            inactiveListSize.current += 1;
             return {
               ...item,
               isActive: false,
@@ -79,6 +81,7 @@ export default function DashboardLeft({
   };
 
   const moveToInactiveList = () => {
+    const toDatabase = [];
     setLists((prevLists) => {
       const updatedLists = prevLists.map((list) => {
         const listName = list[0];
@@ -86,16 +89,15 @@ export default function DashboardLeft({
         if (listName === "inactive") {
           // Store inactive items to make sure items arent duplcated later
           const inactiveItemIds = listItems.map((item) => item.id);
-          const toDatabase = [];
+
           selectedItems.forEach((item) => {
             if (!inactiveItemIds.includes(item.id)) {
-              activeListSize.current -= 1
-              inactiveListSize.current +=1
+              activeListSize.current -= 1;
+              inactiveListSize.current += 1;
               listItems.push(item);
               item.isActive = false;
               toDatabase.push(item);
             }
-            modifyActiveDBStatus(toDatabase);
           });
         } else {
           listItems = listItems.filter(
@@ -107,6 +109,7 @@ export default function DashboardLeft({
         }
         return [listName, listItems];
       });
+      modifyActiveDBStatus(toDatabase);
       return updatedLists;
     });
     setSelectedItems([]);
@@ -127,8 +130,8 @@ export default function DashboardLeft({
         } else {
           selectedItems.forEach((item) => {
             if (!listItemIds.includes(item.id) && item.type === listName) {
-              activeListSize.current += 1
-              inactiveListSize.current -=1
+              activeListSize.current += 1;
+              inactiveListSize.current -= 1;
               listItems.push(item);
               item.isActive = true;
               toDatabase.push(item);
@@ -193,7 +196,11 @@ export default function DashboardLeft({
 
   return (
     <div className="left">
-      <AddFoodItemButton setLists={setLists} lists={lists} activeListSize={activeListSize}/>
+      <AddFoodItemButton
+        setLists={setLists}
+        lists={lists}
+        activeListSize={activeListSize}
+      />
       <MoveItemButton
         checkedItems={selectedItems}
         actionFunction={moveToInactiveList}
