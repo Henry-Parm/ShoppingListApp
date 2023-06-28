@@ -6,19 +6,24 @@ export default function FormElements({
   id,
   handleChange,
   autofillOptions,
+  setAutofillOptions,
   handleAutofillOptionClick,
   handleInputChange,
   showDropdown,
   activeInputId,
   handleSelect,
-  lists,
+  lists
 }) {
-  const foodTypes = lists.slice(0, lists.length - 1).map((list) => {
-    return {
+  const foodTypes = lists
+    .slice(0, lists.length - 1)
+    .filter((list) => list[0] !== 'miscellaneous')
+    .map((list) => ({
       value: list[0],
       label: list[0].charAt(0).toUpperCase() + list[0].slice(1),
-    };
-  });
+    }));
+  const handleBlur = () =>{
+    setAutofillOptions([])
+  }
 
   return (
     <div>
@@ -30,6 +35,7 @@ export default function FormElements({
             id={`name-${id}`}
             name="name"
             value={formInputs.name}
+            onBlur={handleBlur}
             onChange={(e) => handleInputChange(e, id)}
             className="input-field"
             autoComplete="off"

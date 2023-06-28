@@ -7,25 +7,25 @@
    
   }
   .list-color0{
-    background-color: rgba(117, 128, 146, 0.8);
+    background-color: rgba(117, 128, 146, 1);
   }
   .list-color1{
-    background-color: rgba(117, 128, 146, 0.8);
+    background-color: rgba(124, 188, 224, 1);
   }
   .list-color2{
-    background-color: rgba(6, 90, 224, 0.8);
+    background-color: rgba(198, 126, 212, 1);
   }
   .list-color3{
-    background-color: rgba(117, 128, 146, 0.8);
+    background-color: rgba(156, 238, 153, 1);
   }
   .list-color4{
-    background-color: rgba(117, 128, 146, 0.8);
+    background-color: rgba(216, 240, 133, 1);
   }
   .list-color5{
-    background-color: rgba(117, 128, 146, 0.8);
+    background-color: rgba(241, 105, 95, 1);
   }
   .list-color6{
-    background-color: rgba(117, 128, 146, 0.8);
+    background-color: rgba(95, 245, 187, 1);
   }
 
   .inactive-list-titles{
@@ -40,7 +40,7 @@
   }
   .list-title{
     padding: .2em 0;
-    padding-left: 1.5em;
+    padding-left: 1em;
     margin-top: .1em;
     font-weight:bold;
     color: rgba(255, 255, 255, 0.87);

@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import {
   collection,
-  addDoc,
   serverTimestamp,
   doc,
   writeBatch,
@@ -26,6 +25,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
       canAutoActivate: false,
     },
   ]);
+  // console.log(lists)
   const spoonacularApiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
   const fetchFoodItemNames = async (query) => {
@@ -68,7 +68,15 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
     setShowDropdown(false);
   };
   const handleSelect = (option, setId) => {
-    // console.log(option)
+    //Logic to add new list to the array if it doesnt already exist. 
+    if(option && getListIndex(option.value, lists) === -1){
+      setLists((prevLists) => {
+        let lists = [...prevLists];
+        const newList = [option.value.toLowerCase(), []]; //heres the other spot that needs to be changed for colors
+        lists.splice(lists.length - 1, 0, newList);
+        return lists;
+      })
+    }
     setInputSets((prevInputSets) =>
       prevInputSets.map((set) => {
         if (set.id === setId) {
@@ -132,8 +140,10 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
     const updatedLists = inputSets.reduce(
       (lists, inputSet) => {
         let lowerCaseType = "";
-        if (inputSet.type.value)
+        // console.log(inputSet.type.value)
+        if (inputSet.type)
           lowerCaseType = inputSet.type.value.toLowerCase();
+        // else lowerCaseType = 'miscellaneous'
         const newItem = {
           name: inputSet.name,
           type: lowerCaseType || "miscellaneous",
@@ -147,12 +157,8 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
         newItems.push(newItem);
         activeListSize.current += 1;
         const listToUpdate = lists.find((list) => list[0] === newItem.type);
-        if (listToUpdate) {
-          listToUpdate[1].push(newItem);
-        } else {
-          const newList = [newItem.type, [newItem]];
-          lists.splice(lists.length - 1, 0, newList);
-        }
+        listToUpdate[1].push(newItem);
+       
         return lists;
       },
       [...lists]
@@ -189,6 +195,16 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
       console.error("Error adding food items:", error);
     }
   };
+  function getListIndex(type, newLists) {
+    let i = 0;
+    for (const list of newLists) {
+      if (list[0] === type) {
+        return i;
+      }
+      i++;
+    }
+    return -1;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="outer-div">
@@ -199,6 +215,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
           id={inputSet.id}
           handleChange={handleChange}
           autofillOptions={autofillOptions}
+          setAutofillOptions={setAutofillOptions}
           handleAutofillOptionClick={handleAutofillOptionClick}
           handleInputChange={handleInputChange}
           showDropdown={showDropdown}

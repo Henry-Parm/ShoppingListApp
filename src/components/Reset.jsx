@@ -38,8 +38,8 @@ export default function Reset({ setLists, lists, setUserOrder, resetOpen, setRes
       list[1].forEach((item) => allItems.push(item));
     });
     deleteFromDB(allItems);
-    setLists([["inactive", []]]);
-    setUserOrder(["inactive"]);
+    setLists([["miscellaneous", []],["inactive", []]]);
+    setUserOrder(["miscellaneous","inactive"]);
     activeListSize.current = 0
     inactiveListSize.current = 0
   };

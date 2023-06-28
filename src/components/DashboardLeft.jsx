@@ -8,7 +8,6 @@ import {
   query,
   where,
   doc,
-  setDoc,
   writeBatch,
 } from "firebase/firestore";
 
@@ -20,12 +19,13 @@ export default function DashboardLeft({
   activeListSize,
   inactiveListSize,
 }) {
+  // console.log(lists)
   const deletedSelected = () => {
     setLists((oldLists) => {
       const toDelete = [];
       const updatedLists = oldLists.map((list) => {
         const [listName, listItems] = list;
-        let newListItems = listItems.map((item) => item);
+        let newListItems = [...listItems]
         newListItems.forEach((item) => {
           if (selectedItems.includes(item)) {
             item.isActive
@@ -42,6 +42,7 @@ export default function DashboardLeft({
       deleteFromDB(toDelete);
       return updatedLists;
     });
+    setSelectedItems([]);
   };
 
   const moveToInactiveListInverse = () => {
@@ -49,10 +50,9 @@ export default function DashboardLeft({
       let toInactive = [];
       const updatedLists = oldLists.map((list) => {
         const listName = list[0];
-        const listItems = list[1];
-        let newListItems = listItems.map((item) => item);
+        let listItems = [...list[1]];
         if (listName === "inactive") {
-          toInactive.forEach((item) => newListItems.push(item));
+          toInactive.forEach((item) => listItems.push(item));
           toInactive = toInactive.map((item) => {
             activeListSize.current -= 1;
             inactiveListSize.current += 1;
@@ -62,17 +62,17 @@ export default function DashboardLeft({
             };
           });
           modifyActiveDBStatus(toInactive);
-          return [listName, newListItems];
+          return [listName, listItems];
         } else {
           listItems.forEach((item) => {
             if (!selectedItems.includes(item)) {
               toInactive.push(item);
             }
-            newListItems = newListItems.filter((item) =>
+            listItems = listItems.filter((item) =>
               selectedItems.includes(item)
             );
           });
-          return [listName, newListItems];
+          return [listName, listItems];
         }
       });
       return updatedLists;
@@ -85,7 +85,7 @@ export default function DashboardLeft({
     setLists((prevLists) => {
       const updatedLists = prevLists.map((list) => {
         const listName = list[0];
-        let listItems = list[1];
+        let listItems = [...list[1]];
         if (listName === "inactive") {
           // Store inactive items to make sure items arent duplcated later
           const inactiveItemIds = listItems.map((item) => item.id);
@@ -110,6 +110,7 @@ export default function DashboardLeft({
         return [listName, listItems];
       });
       modifyActiveDBStatus(toDatabase);
+      console.log(updatedLists)
       return updatedLists;
     });
     setSelectedItems([]);

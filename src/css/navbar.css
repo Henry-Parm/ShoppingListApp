@@ -4,7 +4,7 @@
   justify-content: space-between;
   width: 100%;
   /* background-color: #0bbfbf; */
-  background: linear-gradient(to bottom, #fdfdfde5, #088F8F);
+  background: linear-gradient(to bottom, #088F8F, #fdfdfde5);
   box-sizing: border-box;
 }
 .landing-page-header-solid {

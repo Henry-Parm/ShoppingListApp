@@ -121,7 +121,7 @@ export default function DashboardMiddle({
                   <SortableItem key={list} id={list}>
                     <div
                       className={`food-list list-color${index % 7}`}
-                      key={listName}
+                      key={index}
                     >
                       <div className="list-title">
                         <FontAwesomeIcon

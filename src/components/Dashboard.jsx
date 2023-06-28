@@ -31,8 +31,8 @@ const Dashboard = () => {
   const [lists, setLists] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
 
-  // console.log('activeListSize', activeListSize)
-  // console.log('inactiveListSize', inactiveListSize)
+  console.log('activeListSize', activeListSize)
+  console.log('inactiveListSize', inactiveListSize)
 
   const handleItemSelection = (item) => {
     setSelectedItems((prevSelectedItems) => {
@@ -66,6 +66,7 @@ const Dashboard = () => {
           queryItems.forEach((doc) => {
             items.push(doc.data());
           });
+          // console.log(items)
           separateItemsByType(items, updatedLists);
         } catch (error) {
           console.error("Error fetching data from database:", error);
@@ -77,7 +78,7 @@ const Dashboard = () => {
 
   const separateItemsByType = (items, updatedLists) => {
     items.forEach((item) => {
-      const inactiveList = updatedLists.length - 1;
+      let inactiveList = updatedLists.length - 1;
       const itemType = item.type;
       if (item.isActive) {
         // console.log(item)
@@ -87,7 +88,7 @@ const Dashboard = () => {
         if (listIndex !== -1) {
           updatedLists[listIndex][1].push(item);
         } else {
-          const newList = [itemType, [item]];
+          const newList = [itemType, [item]]; //Need to add another part to the array here for colors
           updatedLists.splice(inactiveList, 0, newList);
         }
       } else {
@@ -96,7 +97,9 @@ const Dashboard = () => {
         if (getListIndex(itemType, updatedLists) === -1) {
           const newList = [itemType, []];
           updatedLists.splice(inactiveList, 0, newList);
+          inactiveList += 1
           updatedLists[inactiveList][1].push(item);
+          // console.log(inactiveList)
         } else {
           updatedLists[inactiveList][1].push(item);
         }
