@@ -3,12 +3,11 @@ import "../css/navbar.css";
 import "../css/fonts.css";
 import Icon from "../assets/images/shopping-bag.png";
 import Logout from "./Logout";
-import Reset from "./Reset";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 
-export default function Navbar({ email, lists, setLists, setUserOrder }) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Navbar({ email, setResetOpen }) {
+  const [isOpen, setIsOpen] = useState(false)
   const { currentUser } = useAuth();
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
@@ -16,6 +15,9 @@ export default function Navbar({ email, lists, setLists, setUserOrder }) {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const resetOpenHandler = () => {
+    setResetOpen(true)
+  }
   return (
     <div>
       <div
@@ -32,11 +34,7 @@ export default function Navbar({ email, lists, setLists, setUserOrder }) {
             {currentUser ? <Logout /> : null}
             <li>Contact</li>
             {currentUser ? (
-              <Reset
-                lists={lists}
-                setLists={setLists}
-                setUserOrder={setUserOrder}
-              />
+              <li onClick={resetOpenHandler}>Reset</li>
             ) : null}
           </ul>
           <div className="hamburger" onClick={toggleMenu}>

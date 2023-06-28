@@ -34,8 +34,13 @@ export default function DashboardMiddle({
   selectedItems,
   listsDragged,
   setListsDragged,
+  activeListSize,
+  inactiveListSize,
+  isLoading
 }) {
   const screenWidthMobile = window.innerWidth < 576;
+  const noItemsMessage = "No items added. Click 'Add Item' to get started"
+  const noActiveItemsMessage = 'All items currently inactive'
 
   const getListIcon = (listType) => {
     switch (listType) {
@@ -83,54 +88,68 @@ export default function DashboardMiddle({
       });
     }
   }
-
-  return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext
-        items={lists}
-        strategy={
-          screenWidthMobile
-            ? verticalListSortingStrategy
-            : horizontalListSortingStrategy
-        }
+  if(isLoading){
+    return (<div className="middle-text"><div className="loading-spinner"></div></div>)
+  }
+  else{
+    return (
+      <>
+      {(activeListSize.current === 0 && inactiveListSize.current === 0) ? 
+      (<div className="middle-text">{noItemsMessage}</div>)
+       : (activeListSize.current === 0 && inactiveListSize.current !== 0) ?
+        (<div className="middle-text">{noActiveItemsMessage}</div>) 
+      : (
+        <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
       >
-        <div className="middle">
-          {lists.map((list, index) => {
-            const listName = list[0];
-            const listItems = list[1];
-            if (listItems.length > 0 && listName !== "inactive") {
-              return (
-                <SortableItem key={list} id={list}>
-                  <div
-                    className={`food-list list-color${index % 7}`}
-                    key={listName}
-                  >
-                    <div className="list-title">
-                      <FontAwesomeIcon
-                        icon={getListIcon(listName)}
-                        className={`list-icon`}
-                        style={{ marginRight: "1em" }}
-                      />
-                      {listName.charAt(0).toUpperCase() + listName.slice(1)}
+        <SortableContext
+          items={lists}
+          strategy={
+            screenWidthMobile
+              ? verticalListSortingStrategy
+              : horizontalListSortingStrategy
+          }
+        >
+          <div className="middle">
+            {lists.map((list, index) => {
+              const listName = list[0];
+              const listItems = list[1];
+              if (listItems.length > 0 && listName !== "inactive") {
+                return (
+                  <SortableItem key={list} id={list}>
+                    <div
+                      className={`food-list list-color${index % 7}`}
+                      key={listName}
+                    >
+                      <div className="list-title">
+                        <FontAwesomeIcon
+                          icon={getListIcon(listName)}
+                          className={`list-icon`}
+                          style={{ marginRight: "1em" }}
+                        />
+                        {listName.charAt(0).toUpperCase() + listName.slice(1)}
+                      </div>
+                      <FoodItemList
+                        foodItems={listItems}
+                        handleItemSelection={handleItemSelection}
+                        selectedItems={selectedItems}
+                      ></FoodItemList>
                     </div>
-                    <FoodItemList
-                      foodItems={listItems}
-                      handleItemSelection={handleItemSelection}
-                      selectedItems={selectedItems}
-                    ></FoodItemList>
-                  </div>
-                </SortableItem>
-              );
-            } else {
-              return null;
-            }
-          })}
-        </div>
-      </SortableContext>
-    </DndContext>
-  );
+                  </SortableItem>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </div>
+        </SortableContext>
+      </DndContext>
+      )}
+      
+      </>
+    );
+  }
+  
 }

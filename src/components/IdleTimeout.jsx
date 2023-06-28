@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
-const IdleTimeout = ({ timeout, onTimeout }) => {
+const IdleTimeout = ({ timeout }) => {
   const { logout } = useAuth();
-  const [idleTimer, setIdleTimer] = useState(null);
+  const idleTimer = useRef(null);
+
   const resetTimer = () => {
-    clearTimeout(idleTimer);
-    setIdleTimer(setTimeout(logout, timeout));
+    clearTimeout(idleTimer.current);
+    idleTimer.current = setTimeout(logout, timeout);
   };
 
   useEffect(() => {
@@ -23,13 +24,13 @@ const IdleTimeout = ({ timeout, onTimeout }) => {
     resetTimer();
 
     return () => {
-      clearTimeout(idleTimer);
+      clearTimeout(idleTimer.current);
       document.removeEventListener("mousemove", handleUserActivity);
       document.removeEventListener("keydown", handleUserActivity);
       document.removeEventListener("mousedown", handleUserActivity);
       document.removeEventListener("touchstart", handleUserActivity);
     };
-  }, []);
+  }, [timeout, logout]);
 
   return null;
 };

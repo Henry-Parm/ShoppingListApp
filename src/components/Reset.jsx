@@ -10,8 +10,7 @@ import {
 } from "firebase/firestore";
 import "../css/reset.css";
 
-export default function Reset({ setLists, lists, setUserOrder }) {
-  const [showOverlay, setShowOverlay] = useState(false);
+export default function Reset({ setLists, lists, setUserOrder, resetOpen, setResetOpen, activeListSize, inactiveListSize }) {
   const deleteFromDB = async (itemsToDelete) => {
     try {
       const itemsRef = collection(database, "foodItems");
@@ -41,20 +40,19 @@ export default function Reset({ setLists, lists, setUserOrder }) {
     deleteFromDB(allItems);
     setLists([["inactive", []]]);
     setUserOrder(["inactive"]);
-  };
-  const handleShowOverlay = () => {
-    setShowOverlay(true);
+    activeListSize.current = 0
+    inactiveListSize.current = 0
   };
   const handleCloseOverlay = () => {
-    setShowOverlay(false);
+    setResetOpen(false);
   };
   const handleResetConfirm = () => {
     handleReset();
-    setShowOverlay(false);
+    setResetOpen(false);
   };
   return (
     <React.Fragment>
-      {showOverlay ? (
+      {resetOpen ? (
         <div className="reset-warning">
           <p className="reset-text">Are you sure you want to reset?</p>
           <p className="reset-message">
@@ -70,7 +68,6 @@ export default function Reset({ setLists, lists, setUserOrder }) {
           </div>
         </div>
       ) : null}
-      <li onClick={handleShowOverlay}>Reset</li>
     </React.Fragment>
   );
 }

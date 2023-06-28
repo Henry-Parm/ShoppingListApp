@@ -16,6 +16,7 @@ import DashboardMiddle from "./DashboardMiddle";
 import NavBar from "./Navbar";
 import FoodItemList from "./FoodItemList";
 import DashboardLeft from "./DashboardLeft";
+import Reset from "./Reset";
 //npm run format
 
 const Dashboard = () => {
@@ -24,10 +25,11 @@ const Dashboard = () => {
   const [listsReady, setListsReady] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [listsDragged, setListsDragged] = useState(false);
-  const [message, setMessage] = useState(null);
+  const [resetOpen, setResetOpen] = useState(false);
   const activeListSize = useRef(0);
   const inactiveListSize = useRef(0);
   const [lists, setLists] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   // console.log('activeListSize', activeListSize)
   // console.log('inactiveListSize', inactiveListSize)
@@ -46,6 +48,7 @@ const Dashboard = () => {
   };
   //Populate lists
   useEffect(() => {
+    setIsLoading(true)
     const updatedLists = [];
     if (userOrder.length > 0) {
       userOrder.forEach((listName) => {
@@ -99,6 +102,7 @@ const Dashboard = () => {
         }
       }
     });
+    setIsLoading(false)
     setListsReady(true);
     setLists(updatedLists);
   };
@@ -165,11 +169,21 @@ const Dashboard = () => {
 
   return (
     <div>
+      <Reset
+        setResetOpen={setResetOpen}
+        resetOpen={resetOpen}
+        lists={lists}
+        setLists={setLists}
+        setUserOrder={setUserOrder}
+        activeListSize={activeListSize}
+        inactiveListSize={inactiveListSize}
+      />
       <NavBar
         email={currentUser?.email}
         lists={lists}
         setLists={setLists}
         setUserOrder={setUserOrder}
+        setResetOpen={setResetOpen}
       ></NavBar>
       <div className="container">
         <DashboardLeft
@@ -187,6 +201,9 @@ const Dashboard = () => {
           selectedItems={selectedItems}
           listsDragged={listsDragged}
           setListsDragged={setListsDragged}
+          activeListSize={activeListSize}
+          inactiveListSize={inactiveListSize}
+          isLoading={isLoading}
         />
         {/* Inactive Items Bar */}
         <div className="right">

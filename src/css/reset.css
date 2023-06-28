@@ -5,13 +5,15 @@
     background-color: white;
     border: 1px solid black;
     padding: 2em;
-    transform: translate(-80%, 50%);
+    top: 10%;
+    left: 30%;
     z-index: 2;
 }
 .reset-text{
     font-size: larger;
     font-weight: bold;
     margin-bottom: .5em;
+    text-align: center;
 }
 .reset-message{
     font-size: small;
@@ -21,5 +23,12 @@
 .warning-buttons{
     margin-top: 1em;
     display: flex;
-    justify-content: space-around;
+    justify-content:space-evenly;
+}
+@media (max-width: 576px){
+    .reset-warning{
+        width: 100%;
+        top: 10%;
+        left: 0;
+    }
 }
