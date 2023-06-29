@@ -28,11 +28,14 @@ const Dashboard = () => {
   const [resetOpen, setResetOpen] = useState(false);
   const activeListSize = useRef(0);
   const inactiveListSize = useRef(0);
+  const maxColor = useRef(0);
   const [lists, setLists] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
 
-  console.log('activeListSize', activeListSize)
-  console.log('inactiveListSize', inactiveListSize)
+  // console.log('activeListSize', activeListSize)
+  // console.log('inactiveListSize', inactiveListSize)
+  // console.log("maxColor", maxColor)
+  // console.log(lists)
 
   const handleItemSelection = (item) => {
     setSelectedItems((prevSelectedItems) => {
@@ -51,8 +54,9 @@ const Dashboard = () => {
     setIsLoading(true)
     const updatedLists = [];
     if (userOrder.length > 0) {
-      userOrder.forEach((listName) => {
-        updatedLists.push([listName, []]);
+      userOrder.forEach((orderObject) => {
+        updatedLists.push([orderObject.listName, [], orderObject.color]);
+        if(orderObject.color > maxColor.current) maxColor.current = orderObject.color;
       });
       const fetchData = async () => {
         try {
@@ -88,14 +92,14 @@ const Dashboard = () => {
         if (listIndex !== -1) {
           updatedLists[listIndex][1].push(item);
         } else {
-          const newList = [itemType, [item]]; //Need to add another part to the array here for colors
+          const newList = [itemType, [item], ++maxColor.current]; //Need to add another part to the array here for colors
           updatedLists.splice(inactiveList, 0, newList);
         }
       } else {
         // console.log('inactive', item)
         inactiveListSize.current += 1;
         if (getListIndex(itemType, updatedLists) === -1) {
-          const newList = [itemType, []];
+          const newList = [itemType, [], maxColor.current++];
           updatedLists.splice(inactiveList, 0, newList);
           inactiveList += 1
           updatedLists[inactiveList][1].push(item);
@@ -125,7 +129,10 @@ const Dashboard = () => {
 
   //Saving order of items
   useEffect(() => {
-    const newUserOrder = lists.map((list) => list[0]);
+    const newUserOrder = lists.map((list) => {
+      return {listName: list[0], color: list[2]}
+      
+    });
     // Check if it's not the initial render
     if (isInitialRender.current >= 1) {
       // Call setUserOrder after a delay of 5 seconds if not currently dragging
@@ -180,6 +187,7 @@ const Dashboard = () => {
         setUserOrder={setUserOrder}
         activeListSize={activeListSize}
         inactiveListSize={inactiveListSize}
+        maxColor={maxColor}
       />
       <NavBar
         email={currentUser?.email}
@@ -196,6 +204,7 @@ const Dashboard = () => {
           setSelectedItems={setSelectedItems}
           activeListSize={activeListSize}
           inactiveListSize={inactiveListSize}
+          maxColor={maxColor}
         />
         <DashboardMiddle
           lists={lists}

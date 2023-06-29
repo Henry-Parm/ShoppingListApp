@@ -18,26 +18,26 @@ export default function DashboardLeft({
   setSelectedItems,
   activeListSize,
   inactiveListSize,
+  maxColor
 }) {
   // console.log(lists)
   const deletedSelected = () => {
     setLists((oldLists) => {
       const toDelete = [];
       const updatedLists = oldLists.map((list) => {
-        const [listName, listItems] = list;
+        const [listName, listItems, color] = list;
         let newListItems = [...listItems]
         newListItems.forEach((item) => {
           if (selectedItems.includes(item)) {
-            item.isActive
-              ? (activeListSize.current -= 1)
-              : (inactiveListSize.current -= 1);
+            if (item.isActive) activeListSize.current -= 1
+            else inactiveListSize.current -= 1;
             toDelete.push(item);
           }
         });
         newListItems = newListItems.filter(
           (item) => !selectedItems.includes(item)
         );
-        return [listName, newListItems];
+        return [listName, newListItems, color];
       });
       deleteFromDB(toDelete);
       return updatedLists;
@@ -51,6 +51,7 @@ export default function DashboardLeft({
       const updatedLists = oldLists.map((list) => {
         const listName = list[0];
         let listItems = [...list[1]];
+        const color = list[2]
         if (listName === "inactive") {
           toInactive.forEach((item) => listItems.push(item));
           toInactive = toInactive.map((item) => {
@@ -72,7 +73,7 @@ export default function DashboardLeft({
               selectedItems.includes(item)
             );
           });
-          return [listName, listItems];
+          return [listName, listItems, color];
         }
       });
       return updatedLists;
@@ -86,6 +87,7 @@ export default function DashboardLeft({
       const updatedLists = prevLists.map((list) => {
         const listName = list[0];
         let listItems = [...list[1]];
+        const color = list[2]
         if (listName === "inactive") {
           // Store inactive items to make sure items arent duplcated later
           const inactiveItemIds = listItems.map((item) => item.id);
@@ -107,7 +109,7 @@ export default function DashboardLeft({
               )
           );
         }
-        return [listName, listItems];
+        return [listName, listItems, color];
       });
       modifyActiveDBStatus(toDatabase);
       console.log(updatedLists)
@@ -122,6 +124,7 @@ export default function DashboardLeft({
       let updatedLists = prevLists.map((list) => {
         const listName = list[0];
         let listItems = list[1];
+        const color = list[2]
         const listItemIds = listItems.map((item) => item.id);
         if (listName === "inactive") {
           listItems = listItems.filter(
@@ -139,7 +142,7 @@ export default function DashboardLeft({
             }
           });
         }
-        return [listName, listItems];
+        return [listName, listItems, color];
       });
       modifyActiveDBStatus(toDatabase);
       return updatedLists;
@@ -201,6 +204,7 @@ export default function DashboardLeft({
         setLists={setLists}
         lists={lists}
         activeListSize={activeListSize}
+        maxColor={maxColor}
       />
       <MoveItemButton
         checkedItems={selectedItems}

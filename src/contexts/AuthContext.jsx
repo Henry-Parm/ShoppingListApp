@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const collectionRef = collection(database, "users");
-  const defaultOrder = ["miscellaneous","inactive"];
+  const defaultOrder = [{listName: "miscellaneous", color: 1},{listName: "inactive", color: 0}]; //changed
 
   const signup = async (email, firstName, password) => {
     try {

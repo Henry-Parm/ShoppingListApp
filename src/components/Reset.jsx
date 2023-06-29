@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import "../css/reset.css";
 
-export default function Reset({ setLists, lists, setUserOrder, resetOpen, setResetOpen, activeListSize, inactiveListSize }) {
+export default function Reset({ setLists, lists, setUserOrder, resetOpen, setResetOpen, activeListSize, inactiveListSize, maxColor }) {
   const deleteFromDB = async (itemsToDelete) => {
     try {
       const itemsRef = collection(database, "foodItems");
@@ -38,8 +38,9 @@ export default function Reset({ setLists, lists, setUserOrder, resetOpen, setRes
       list[1].forEach((item) => allItems.push(item));
     });
     deleteFromDB(allItems);
-    setLists([["miscellaneous", []],["inactive", []]]);
-    setUserOrder(["miscellaneous","inactive"]);
+    setLists([["miscellaneous", [], 1],["inactive", [], 0]]);
+    setUserOrder([{listName: "miscellaneous",color: 1},{listName: "inactive",color: 0}]);
+    maxColor.current = 1
     activeListSize.current = 0
     inactiveListSize.current = 0
   };

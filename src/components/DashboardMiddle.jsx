@@ -118,9 +118,9 @@ export default function DashboardMiddle({
               const listItems = list[1];
               if (listItems.length > 0 && listName !== "inactive") {
                 return (
-                  <SortableItem key={list} id={list}>
+                  <SortableItem key={index} id={list}>
                     <div
-                      className={`food-list list-color${index % 7}`}
+                      className={`food-list list-color${list[2] % 7}`}
                       key={index}
                     >
                       <div className="list-title">

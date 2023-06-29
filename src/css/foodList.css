@@ -6,6 +6,9 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
    
   }
+  .list-color{
+    background-color: rgba(117, 128, 146, 1);
+  }
   .list-color0{
     background-color: rgba(117, 128, 146, 1);
   }

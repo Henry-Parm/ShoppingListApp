@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddFoodItemsForm from "./AddFoodItemsForm";
 
-const AddFoodItemButton = ({ setLists, lists, activeListSize }) => {
+const AddFoodItemButton = ({ setLists, lists, activeListSize, maxColor }) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showElement, setShowElement] = useState(false);
 
@@ -33,6 +33,7 @@ const AddFoodItemButton = ({ setLists, lists, activeListSize }) => {
               setLists={setLists}
               lists={lists}
               activeListSize={activeListSize}
+              maxColor={maxColor}
             />
           </div>
         </div>

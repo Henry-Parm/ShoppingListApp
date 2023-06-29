@@ -11,7 +11,7 @@ import { database } from "../FirebaseConfig";
 import FormElements from "./FormElements";
 import axios from "axios";
 
-const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
+const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor }) => {
   const [autofillOptions, setAutofillOptions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeInputId, setActiveInputId] = useState(null);
@@ -72,7 +72,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize }) => {
     if(option && getListIndex(option.value, lists) === -1){
       setLists((prevLists) => {
         let lists = [...prevLists];
-        const newList = [option.value.toLowerCase(), []]; //heres the other spot that needs to be changed for colors
+        const newList = [option.value.toLowerCase(), [], ++maxColor.current]; //heres the other spot that needs to be changed for colors
         lists.splice(lists.length - 1, 0, newList);
         return lists;
       })
