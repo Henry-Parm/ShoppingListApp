@@ -32,11 +32,6 @@ const Dashboard = () => {
   const [lists, setLists] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
 
-  // console.log('activeListSize', activeListSize)
-  // console.log('inactiveListSize', inactiveListSize)
-  // console.log("maxColor", maxColor)
-  // console.log(lists)
-
   const handleItemSelection = (item) => {
     setSelectedItems((prevSelectedItems) => {
       const isItemSelected = prevSelectedItems.includes(item);
@@ -70,7 +65,6 @@ const Dashboard = () => {
           queryItems.forEach((doc) => {
             items.push(doc.data());
           });
-          // console.log(items)
           separateItemsByType(items, updatedLists);
         } catch (error) {
           console.error("Error fetching data from database:", error);
@@ -85,7 +79,6 @@ const Dashboard = () => {
       let inactiveList = updatedLists.length - 1;
       const itemType = item.type;
       if (item.isActive) {
-        // console.log(item)
         activeListSize.current += 1;
         const listIndex = getListIndex(itemType, updatedLists);
         //if the list exists, push the item into it
@@ -96,14 +89,12 @@ const Dashboard = () => {
           updatedLists.splice(inactiveList, 0, newList);
         }
       } else {
-        // console.log('inactive', item)
         inactiveListSize.current += 1;
         if (getListIndex(itemType, updatedLists) === -1) {
           const newList = [itemType, [], maxColor.current++];
           updatedLists.splice(inactiveList, 0, newList);
           inactiveList += 1
           updatedLists[inactiveList][1].push(item);
-          // console.log(inactiveList)
         } else {
           updatedLists[inactiveList][1].push(item);
         }
@@ -141,7 +132,6 @@ const Dashboard = () => {
         const timeoutId = setTimeout(() => {
           setUserOrder(newUserOrder);
           setIsDragging(true);
-          // console.log('database write')
           setIsDragging(false);
         }, delay);
         // Cleanup function to cancel the timeout if component unmounts or the order changes

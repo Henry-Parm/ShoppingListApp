@@ -66,9 +66,6 @@
     border-radius: 5px;
     background-color: #f2f2f2;
   }
-  .food-item:first-child {
-    /* margin-top: .7em; */
-  }
   
   .checkbox-container {
     margin-right: 10px;

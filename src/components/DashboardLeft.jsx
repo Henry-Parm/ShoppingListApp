@@ -1,6 +1,6 @@
 import React from "react";
 import AddFoodItemButton from "./AddFoodItemButton";
-import MoveItemButton from "./moveItemButton";
+import MoveItemButton from "./MoveItemButton";
 import { database } from "../FirebaseConfig";
 import {
   collection,
@@ -20,7 +20,6 @@ export default function DashboardLeft({
   inactiveListSize,
   maxColor
 }) {
-  // console.log(lists)
   const deletedSelected = () => {
     setLists((oldLists) => {
       const toDelete = [];
@@ -112,7 +111,6 @@ export default function DashboardLeft({
         return [listName, listItems, color];
       });
       modifyActiveDBStatus(toDatabase);
-      console.log(updatedLists)
       return updatedLists;
     });
     setSelectedItems([]);
