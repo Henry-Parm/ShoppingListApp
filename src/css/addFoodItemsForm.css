@@ -115,6 +115,9 @@
   border: 1px solid gray;
   width: 10em;
 }
+.list-field{
+  width: 10em;
+}
 .input-number-field{
   appearance: textfield;
   width: 3em;

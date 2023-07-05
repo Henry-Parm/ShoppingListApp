@@ -20,11 +20,11 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userOrder, setUserOrder] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const collectionRef = collection(database, "users");
-  const defaultOrder = [{listName: "miscellaneous", color: 1},{listName: "inactive", color: 0}]; //changed
+  const defaultOrder = [{listName: "miscellaneous", color: 1, id: 1},{listName: "inactive", color: 0, id: 0}]; 
+  // const defaultOrder = [{listName: "miscellaneous", color: 1},{listName: "inactive", color: 0}]; 
 
   const signup = async (email, firstName, password) => {
     try {
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       await addDoc(collectionRef, {
         email: email,
         order: defaultOrder,
-        name: firstName,
+        name: firstName, //remove this
       });
     } catch (error) {
       // Handle errors
@@ -127,7 +127,6 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       getOrder(user);
       setCurrentUser(user);
-      setLoading(false);
     });
 
     return unsubscribe;
@@ -144,7 +143,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

@@ -1,17 +1,11 @@
-//Add Food items form
 import React, { useState, useEffect } from "react";
-import {
-  collection,
-  serverTimestamp,
-  doc,
-  writeBatch,
-} from "firebase/firestore";
+import { collection, serverTimestamp, doc, writeBatch } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
 import { database } from "../FirebaseConfig";
 import FormElements from "./FormElements";
 import axios from "axios";
 
-const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor }) => {
+const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, maxListId }) => {
   const [autofillOptions, setAutofillOptions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeInputId, setActiveInputId] = useState(null);
@@ -20,7 +14,8 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor })
     {
       id: Date.now(),
       name: "",
-      type: "",
+      option: "",
+      listId: null,
       duration: "",
       canAutoActivate: false,
     },
@@ -29,7 +24,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor })
   const spoonacularApiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
   const fetchFoodItemNames = async (query) => {
-    //lowers api calls. Modify as needed
+    // lowers api calls. Modify as needed
     if (query.length > 1 && query.length % 2 !== 0) {
       try {
         const response = await axios.get(
@@ -57,6 +52,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor })
   };
 
   const handleAutofillOptionClick = (option, setId) => {
+    console.log("clicked");
     setInputSets((prevInputSets) =>
       prevInputSets.map((set) => {
         if (set.id === setId) {
@@ -67,28 +63,45 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor })
     );
     setShowDropdown(false);
   };
-  const handleSelect = (option, setId) => {
-    //Logic to add new list to the array if it doesnt already exist. 
-    if(option && getListIndex(option.value, lists) === -1){
-      setLists((prevLists) => {
-        let lists = [...prevLists];
-        const newList = [option.value.toLowerCase(), [], ++maxColor.current]; //heres the other spot that needs to be changed for colors
-        lists.splice(lists.length - 1, 0, newList);
-        return lists;
-      })
+
+  const handleSelect = (option, setId, action) => {
+    if (action.action === "clear") {
+      setInputSets((prevInputSets) =>
+        prevInputSets.map((set) => {
+          if (set.id === setId) {
+            return { ...set, listId: null, option: "" };
+          }
+          return set;
+        })
+      );
+    } else if (option) {
+      setInputSets((prevInputSets) =>
+        prevInputSets.map((set) => {
+          if (set.id === setId) {
+            console.log({ ...set, listId: option.value, option: option });
+            // console.log({ ...set, option: option, listId: option.value})
+            return { ...set, listId: option.value, option: option };
+          }
+          return set;
+        })
+      );
     }
+  };
+
+  const handleCreateOption = (inputValue, setId) => {
+    addList(inputValue);
     setInputSets((prevInputSets) =>
       prevInputSets.map((set) => {
         if (set.id === setId) {
-          return { ...set, type: option };
+          return { ...set, listId: maxListId.current, option: { value: maxListId.current, label: inputValue } };
         }
         return set;
       })
     );
   };
 
-  const handleInputChange = (e, setId) => {
-    const { name, value } = e.target;
+  const handleNameChange = (e, setId) => {
+    const { value } = e.target;
     setActiveInputId(setId);
     handleChange(e, setId);
     fetchFoodItemNames(value);
@@ -115,7 +128,8 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor })
     const newInputSet = {
       id: Date.now(),
       name: "",
-      type: "",
+      option: "",
+      listId: null,
       duration: "",
       canAutoActivate: false,
     };
@@ -139,14 +153,9 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor })
     const newItems = [];
     const updatedLists = inputSets.reduce(
       (lists, inputSet) => {
-        let lowerCaseType = "";
-        // console.log(inputSet.type.value)
-        if (inputSet.type)
-          lowerCaseType = inputSet.type.value.toLowerCase();
-        // else lowerCaseType = 'miscellaneous'
         const newItem = {
           name: inputSet.name,
-          type: lowerCaseType || "miscellaneous",
+          listId: inputSet.listId || 1,
           duration: inputSet.canAutoActivate ? Number(inputSet.duration) : 0,
           initialDuration: inputSet.canAutoActivate ? inputSet.duration : 0,
           isActive: true,
@@ -156,21 +165,22 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor })
         };
         newItems.push(newItem);
         activeListSize.current += 1;
-        const listToUpdate = lists.find((list) => list[0] === newItem.type);
-        listToUpdate[1].push(newItem);
-       
+        const listToUpdate = lists.find((list) => list.id === newItem.listId);
+        listToUpdate.items.push(newItem);
+
         return lists;
       },
       [...lists]
     );
 
     setLists(updatedLists);
-    //reset inputs
+    // reset inputs
     setInputSets([
       {
         id: Date.now(),
         name: "",
-        type: "",
+        option: "",
+        listId: null,
         duration: "",
         canAutoActivate: false,
       },
@@ -195,34 +205,27 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, maxColor })
       console.error("Error adding food items:", error);
     }
   };
-  function getListIndex(type, newLists) {
-    let i = 0;
-    for (const list of newLists) {
-      if (list[0] === type) {
-        return i;
-      }
-      i++;
-    }
-    return -1;
-  }
 
   return (
     <form onSubmit={handleSubmit} className="outer-div">
-      {inputSets.map((inputSet) => (
+      {inputSets.map((inputSet, index) => (
         <FormElements
           key={inputSet.id}
           formInputs={inputSet}
+          index={index}
           id={inputSet.id}
           handleChange={handleChange}
           autofillOptions={autofillOptions}
           setAutofillOptions={setAutofillOptions}
           handleAutofillOptionClick={handleAutofillOptionClick}
-          handleInputChange={handleInputChange}
+          handleNameChange={handleNameChange}
           showDropdown={showDropdown}
           fetchFoodItemNames={fetchFoodItemNames}
           activeInputId={activeInputId}
           handleSelect={handleSelect}
           lists={lists}
+          handleCreateOption={handleCreateOption}
+          maxListId={maxListId}
         />
       ))}
       <div>

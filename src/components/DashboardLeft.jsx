@@ -10,6 +10,7 @@ import {
   doc,
   writeBatch,
 } from "firebase/firestore";
+import ManageButton from "./ManageButton";
 
 export default function DashboardLeft({
   setLists,
@@ -18,7 +19,10 @@ export default function DashboardLeft({
   setSelectedItems,
   activeListSize,
   inactiveListSize,
-  maxColor
+  maxListId,
+  setManageOverlay,
+  manageOverlay,
+  getListIndex
 }) {
   const deletedSelected = () => {
     setLists((oldLists) => {
@@ -28,6 +32,7 @@ export default function DashboardLeft({
         let newListItems = [...listItems]
         newListItems.forEach((item) => {
           if (selectedItems.includes(item)) {
+            // console.log("active?", item.isActive)
             if (item.isActive) activeListSize.current -= 1
             else inactiveListSize.current -= 1;
             toDelete.push(item);
@@ -52,7 +57,6 @@ export default function DashboardLeft({
         let listItems = [...list[1]];
         const color = list[2]
         if (listName === "inactive") {
-          toInactive.forEach((item) => listItems.push(item));
           toInactive = toInactive.map((item) => {
             activeListSize.current -= 1;
             inactiveListSize.current += 1;
@@ -61,6 +65,7 @@ export default function DashboardLeft({
               isActive: false,
             };
           });
+          toInactive.forEach((item) => listItems.push(item));
           modifyActiveDBStatus(toInactive);
           return [listName, listItems];
         } else {
@@ -195,6 +200,15 @@ export default function DashboardLeft({
       console.error("Error deleting items from the database:", error);
     }
   };
+  const addList= (listName) => {
+    maxListId.current += 1
+    const newList = {listName: listName, color: maxListId.current, id: maxListId.current, items: []}
+    setLists((oldLists => {
+      let oldListsCopy = [...oldLists]
+      oldListsCopy.splice(oldListsCopy.length - 1, 0, newList);
+      return oldListsCopy
+    }))
+  }
 
   return (
     <div className="left">
@@ -202,7 +216,9 @@ export default function DashboardLeft({
         setLists={setLists}
         lists={lists}
         activeListSize={activeListSize}
-        maxColor={maxColor}
+        addList={addList}
+        getListIndex={getListIndex}
+        maxListId={maxListId}
       />
       <MoveItemButton
         checkedItems={selectedItems}
@@ -217,13 +233,19 @@ export default function DashboardLeft({
       <MoveItemButton
         checkedItems={selectedItems}
         actionFunction={moveToInactiveListInverse}
-        buttonName="Deactivate all but selected"
+        buttonName="Deactivate Unselected"
       />
       <MoveItemButton
         checkedItems={selectedItems}
         actionFunction={deletedSelected}
         buttonName="Delete Selected"
       />
+      <ManageButton
+        setManageOverlay={setManageOverlay}
+        manageOverlay={manageOverlay}
+        lists={lists}
+        setLists={setLists}
+        />
     </div>
-  );
+  )
 }

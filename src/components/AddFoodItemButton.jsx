@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import AddFoodItemsForm from "./AddFoodItemsForm";
 
-const AddFoodItemButton = ({ setLists, lists, activeListSize, maxColor }) => {
+const AddFoodItemButton = ({
+  setLists,
+  lists,
+  activeListSize,
+  addList,
+  getListIndex,
+  maxListId,
+}) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showElement, setShowElement] = useState(false);
 
@@ -22,7 +29,7 @@ const AddFoodItemButton = ({ setLists, lists, activeListSize, maxColor }) => {
       <button className="menu-button" onClick={handleClick}>
         Add Item
       </button>
-      {showOverlay ? (
+      {showOverlay && (
         <div className={`input-overlay${showElement ? "" : " fade-out"}`}>
           <div className="overlay-content">
             <button className="close-button" onClick={handleCloseOverlay}>
@@ -33,11 +40,13 @@ const AddFoodItemButton = ({ setLists, lists, activeListSize, maxColor }) => {
               setLists={setLists}
               lists={lists}
               activeListSize={activeListSize}
-              maxColor={maxColor}
+              addList={addList}
+              getListIndex={getListIndex}
+              maxListId={maxListId}
             />
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };

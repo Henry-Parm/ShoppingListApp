@@ -8,22 +8,33 @@ export default function FormElements({
   autofillOptions,
   setAutofillOptions,
   handleAutofillOptionClick,
-  handleInputChange,
+  handleNameChange,
   showDropdown,
   activeInputId,
   handleSelect,
-  lists
+  lists,
+  index,
+  handleCreateOption,
+
 }) {
+  // console.log(lists)
   const foodTypes = lists
     .slice(0, lists.length - 1)
-    .filter((list) => list[0] !== 'miscellaneous')
+    .filter((list) => list.listName !== 'miscellaneous')
     .map((list) => ({
-      value: list[0],
-      label: list[0].charAt(0).toUpperCase() + list[0].slice(1),
+      value: list.id,
+      label: list.listName.charAt(0).toUpperCase() + list.listName.slice(1),
     }));
-  const handleBlur = () =>{
-    setAutofillOptions([])
-  }
+    const handleBlur = () => {
+      setTimeout(() => {
+        setAutofillOptions([]);
+      }, 100);
+    };
+
+    let formatCreateLabel = inputValue => (
+      <span><span style={{ color: "blue" }}>Add List:  </span><span>{inputValue}</span></span>
+    );
+    
 
   return (
     <div>
@@ -36,7 +47,7 @@ export default function FormElements({
             name="name"
             value={formInputs.name}
             onBlur={handleBlur}
-            onChange={(e) => handleInputChange(e, id)}
+            onChange={(e) => handleNameChange(e, id)}
             className="input-field"
             autoComplete="off"
           />
@@ -47,6 +58,7 @@ export default function FormElements({
                   key={index}
                   className={"autofill-options"}
                   onClick={() => handleAutofillOptionClick(option, id)}
+                  // onTouchStart={() => handleAutofillOptionClick(option, id)}
                 >
                   {option}
                 </li>
@@ -54,6 +66,9 @@ export default function FormElements({
             </ul>
           )}
         </div>
+        {/* {index === 0 && <div className="tooltip">
+                SOMETHING
+          </div>} */}
         <div className="type-container">
           <label htmlFor={`type-${id}`}>List:</label>
           <CreatableSelect
@@ -61,13 +76,14 @@ export default function FormElements({
             options={foodTypes}
             id={`type-${id}`}
             name="type"
-            value={formInputs.type}
-            onChange={(e) => handleSelect(e, id)}
-            className="select-field"
-          />
+            className="list-field"
+            onCreateOption={(value) => handleCreateOption(value, id)}
+            formatCreateLabel={formatCreateLabel}
+            value={formInputs.option}
+            onChange={(e, action) => handleSelect(e, id, action)}
+            />
         </div>
         <div className="checkbox-container">
-          <div className="checkboxText">Auto Return</div>
           <input
             type="checkbox"
             id={`canAutoActivate-${id}`}
@@ -76,7 +92,7 @@ export default function FormElements({
             onChange={(e) => handleChange(e, id)}
             className="checkbox-field"
           />
-        </div>
+          </div>
       </div>
       {formInputs.canAutoActivate && (
         <div className="duration-container">

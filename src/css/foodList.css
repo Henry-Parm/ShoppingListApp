@@ -6,54 +6,50 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
    
   }
-  .list-color{
-    background-color: rgba(117, 128, 146, 1);
-  }
   .list-color0{
     background-color: rgba(117, 128, 146, 1);
   }
   .list-color1{
-    background-color: rgba(124, 188, 224, 1);
+    background-color: rgb(21, 143, 214);
   }
   .list-color2{
-    background-color: rgba(198, 126, 212, 1);
+    background-color: rgb(240, 3, 3);
   }
   .list-color3{
-    background-color: rgba(156, 238, 153, 1);
+    background-color: rgb(6, 163, 1);
   }
   .list-color4{
-    background-color: rgba(216, 240, 133, 1);
+    background-color: rgb(206, 2, 2);
   }
   .list-color5{
-    background-color: rgba(241, 105, 95, 1);
+    background-color: rgb(0, 3, 180);
   }
   .list-color6{
-    background-color: rgba(95, 245, 187, 1);
+    background-color: rgb(1, 202, 159);
   }
 
   .inactive-list-titles{
     display: flex;
     justify-content: center;
-    color: azure;
-    padding: .3em 0;
+    color: white;
+    padding: .1em 0;
     background-color: rgba(117, 128, 146, 0.8);
   }
   .inactive{
-    background-color: #0bbfbf;
+    background-color: #03bff8;
   }
   .list-title{
-    padding: .2em 0;
-    padding-left: 1em;
+    padding: .05em 0;
+    padding-left: 2em;
     margin-top: .1em;
     font-weight:bold;
-    color: rgba(255, 255, 255, 0.87);
-  }
-  .list-icon-produce{
-    color: rgba(0, 128, 0, 1);
+    color: white
   }
   .draggable-area{
     position: absolute;
     top: .2em;
+    width: 1em; 
+    height: 1em; 
   }
   .draggable-dots{
     fill: white;

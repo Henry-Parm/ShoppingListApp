@@ -4,7 +4,7 @@
   justify-content: space-between;
   width: 100%;
   /* background-color: #0bbfbf; */
-  background: linear-gradient(to bottom, #088F8F, #fdfdfde5);
+  background: linear-gradient(to bottom, #03bff8, lightgray);
   box-sizing: border-box;
 }
 .landing-page-header-solid {
@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: linear-gradient(to bottom, #088F8F, rgb(105, 160, 158));
+  background: linear-gradient(to bottom, #e5f6fc, rgb(105, 160, 158));
   box-sizing: border-box;
   padding-bottom: .5em;
 }
@@ -52,6 +52,7 @@
 .nav-links.open {
   display: flex;
   width: 6em;
+  border: 1px solid black;
 }
 
 .nav-links li {
@@ -68,6 +69,15 @@
   font-weight: bold;
   font-size: 2em;
   color: #be1f47;
+  margin-left: 1em;
+  flex-shrink: 1;
+  width: 50%;
+}
+.landing-page-title-landing {
+  font-family: "Pacifico";
+  font-weight: bold;
+  font-size: 2em;
+  color: rgb(28, 38, 126);
   margin-left: 1em;
   flex-shrink: 1;
   width: 50%;
@@ -145,10 +155,10 @@
     display: none;
   }
   .email-576{
-    color: white;
+    color: black;
     display: block;
     text-align: center;
-    background-color: #088F8F;
+    background-color: lightgray;
     width: 100%;
     padding: 2px;
   }

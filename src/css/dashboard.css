@@ -14,15 +14,16 @@
 .right {
   flex-basis: 20%;
   align-self: flex-start;
-  background-color: transparent;
   overflow-y: auto; 
   max-height: 90vh;
+  border: 2px solid black;
 }
 .left{
   flex-basis: 10%;
   align-self: flex-start;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
+  border: 2px solid black;
+  
 }
 
 .middle {
@@ -33,10 +34,12 @@
   margin-top: 10px;
   padding: .7em;
   align-self: flex-start; 
-  background-color: #0bbfbf;
+  background-color: #03bff8;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid black;
 }
 .middle-text {
+  text-align: center;
   display: flex;
   justify-content: center;
   color: white;
@@ -47,8 +50,9 @@
   margin-top: 10px;
   padding: .7em;
   align-self: flex-start; 
-  background-color: #0bbfbf;
+  background-color: #03bff8;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid black;
 }
 .loading-spinner {
   display: inline-block;
@@ -72,23 +76,23 @@
 /* Menu button styles */
 .menu-button {
   width: 100%;
-  height: 5em;
+  height: 3em;
   margin: .2em 0;
   display: inline-block;
-  padding: 10px;
+  padding: 2px;
   font-size: 12px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   border-radius: 4px;
-  border: 2px solid black;
+  
   color: #fff;
-  background-color: #0bbfbf; 
+  background-color: #03bff8; 
 }
 
 .menu-button:hover {
-  background-color: #088F8F; 
+  background-color: #026988; 
 }
 
 .menu-button:active {
@@ -129,6 +133,11 @@
     order: 1;
     flex-basis: 100%;
   }
+  .middle-text {
+    order: 1;
+    flex-basis: 100%;
+  }
+  
 }
 @media (max-width: 576px) {
   .left,
@@ -144,4 +153,5 @@
     flex-direction: column;
     align-self: flex-start; 
   }
+
 }
