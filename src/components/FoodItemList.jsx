@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import FoodItem from "./FoodItem";
+import { useLists } from "../contexts/ListsContext";
 
 const FoodItemList = ({
   foodItems,
-  handleItemSelection,
-  selectedItems,
   isSorted,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const {  handleItemSelection, selectedItems } = useLists()
 
   const handleCheckboxChange = (item) => {
     handleItemSelection(item);
@@ -15,15 +15,12 @@ const FoodItemList = ({
   const handleMouseDown = () => {
     setIsDragging(true);
   };
-
   const handleMouseUp = () => {
     setIsDragging(false);
   };
   useEffect(() => {
-    // Add event listener for 'mouseup' at the document level
     document.addEventListener("mouseup", handleMouseUp);
     return () => {
-      // Clean up the event listener when the component unmounts
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);

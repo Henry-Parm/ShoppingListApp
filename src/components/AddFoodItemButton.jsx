@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import AddFoodItemsForm from "./AddFoodItemsForm";
 
 const AddFoodItemButton = ({
-  setLists,
-  lists,
-  activeListSize,
   addList,
-  getListIndex,
-  maxListId,
 }) => {
+  
   const [showOverlay, setShowOverlay] = useState(false);
   const [showElement, setShowElement] = useState(false);
 
@@ -37,12 +33,7 @@ const AddFoodItemButton = ({
             </button>
             <AddFoodItemsForm
               onSave={handleCloseOverlay}
-              setLists={setLists}
-              lists={lists}
-              activeListSize={activeListSize}
               addList={addList}
-              getListIndex={getListIndex}
-              maxListId={maxListId}
             />
           </div>
         </div>

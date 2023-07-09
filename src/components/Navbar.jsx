@@ -6,11 +6,12 @@ import Logout from "./Logout";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 
-export default function Navbar({ email, setResetOpen }) {
+export default function Navbar({ setResetOpen }) {
   const [isOpen, setIsOpen] = useState(false)
   const { currentUser } = useAuth();
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
+  const email = currentUser?.email
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

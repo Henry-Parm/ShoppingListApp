@@ -8,7 +8,7 @@ const FoodItem = ({
   isDragging,
 }) => {
   const handleCheckboxChange = () => {
-    // Here to prevent warnings
+    //prevent warning?
   };
   const handleDrag = () => {
     if (isDragging) {

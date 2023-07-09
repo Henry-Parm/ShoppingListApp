@@ -14,20 +14,18 @@ import ManageButton from "./ManageButton";
 import { useLists } from "../contexts/ListsContext";
 
 export default function DashboardLeft({
-  setLists,
-  lists,
-  selectedItems,
-  setSelectedItems,
-  activeListSize,
-  inactiveListSize,
-  maxListId,
   setManageOverlay,
-  manageOverlay,
-  getListIndex,
-  listsDragged,
-  setListsDragged
+  manageOverlay
 }) {
-  // const {number} = useLists()
+  const {activeListSize,
+    inactiveListSize,
+    maxListId,
+    lists,
+    setLists,
+    selectedItems,
+    setSelectedItems,
+    listsDragged,
+    setListsDragged,} = useLists()
 
   const deletedSelected = () => {
     setLists((oldLists) => {
@@ -226,7 +224,6 @@ export default function DashboardLeft({
         lists={lists}
         activeListSize={activeListSize}
         addList={addList}
-        getListIndex={getListIndex}
         maxListId={maxListId}
       />
       <MoveItemButton

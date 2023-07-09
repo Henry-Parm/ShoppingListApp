@@ -9,8 +9,10 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import "../css/reset.css";
+import { useLists } from "../contexts/ListsContext";
 
-export default function Reset({ setLists, lists, setUserOrder, resetOpen, setResetOpen, activeListSize, inactiveListSize, maxColor }) {
+export default function Reset({  resetOpen, setResetOpen  }) {
+  const { setLists, lists, setUserOrder, activeListSize, inactiveListSize, maxListId } = useLists()
   const deleteFromDB = async (itemsToDelete) => {
     try {
       const itemsRef = collection(database, "foodItems");
@@ -35,14 +37,14 @@ export default function Reset({ setLists, lists, setUserOrder, resetOpen, setRes
   const handleReset = () => {
     const allItems = [];
     lists.forEach((list) => {
-      list[1].forEach((item) => allItems.push(item));
+      list.items.forEach((item) => allItems.push(item));
     });
     deleteFromDB(allItems);
-    setLists([["miscellaneous", [], 1],["inactive", [], 0]]);
-    setUserOrder([{listName: "miscellaneous",color: 1},{listName: "inactive",color: 0}]);
-    maxColor.current = 1
-    activeListSize.current = 0
-    inactiveListSize.current = 0
+    setLists([{name: "miscellaneous", color: 2, id: 2, items: []},{name: "inactive", color: 1, id: 1, items: []}]);
+    setUserOrder([{name: "miscellaneous", color: 2, id: 2},{name: "inactive", color: 1, id: 1}]);
+    activeListSize.current = 0;
+    inactiveListSize.current = 0;
+    maxListId.current = 0;
   };
   const handleCloseOverlay = () => {
     setResetOpen(false);

@@ -11,7 +11,6 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  horizontalListSortingStrategy,
   verticalListSortingStrategy,
   rectSortingStrategy
 } from "@dnd-kit/sortable";
@@ -27,19 +26,30 @@ import {
   faBreadSlice,
 } from "@fortawesome/free-solid-svg-icons";
 import FoodItemList from "./FoodItemList";
-// import { useLists } from "../contexts/ListsContext";
+import { useLists } from "../contexts/ListsContext";
 
 export default function DashboardMiddle({
-  lists,
-  setLists,
-  handleItemSelection,
-  selectedItems,
-  listsDragged,
-  setListsDragged,
-  activeListSize,
-  inactiveListSize,
-  isLoading
+ 
 }) {
+  const {number,
+    activeListSize,
+    inactiveListSize,
+    maxListId,
+    lists,
+    setLists,
+    isLoading,
+    setIsLoading,
+    selectedItems,
+    setSelectedItems,
+    listsReady,
+    setListsReady,
+    isDragging,
+    setIsDragging,
+    listsDragged,
+    setListsDragged,
+    handleItemSelection,
+    setUserOrder} = useLists()
+
   const screenWidthMobile = window.innerWidth < 576;
   const noItemsMessage = "No items added. Click 'Add Item' to get started"
   const noActiveItemsMessage = 'All items currently inactive'

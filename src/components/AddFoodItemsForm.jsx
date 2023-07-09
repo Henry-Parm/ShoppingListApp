@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { collection, serverTimestamp, doc, writeBatch } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
-// import { useLists } from "../contexts/ListsContext";
+import { useLists } from "../contexts/ListsContext";
 import { database } from "../FirebaseConfig";
 import FormElements from "./FormElements";
 import axios from "axios";
 
-const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, maxListId }) => {
+const AddFoodItemsForm = ({ onSave, addList }) => {
   const [autofillOptions, setAutofillOptions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeInputId, setActiveInputId] = useState(null);
@@ -21,8 +21,11 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, ma
       canAutoActivate: false,
     },
   ]);
-  // console.log(lists)
-  console.log(inputSets)
+  const {activeListSize,
+    maxListId,
+    lists,
+    setLists} = useLists()
+
   const spoonacularApiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
   const fetchFoodItemNames = async (query) => {
@@ -207,6 +210,25 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, ma
       console.error("Error adding food items:", error);
     }
   };
+  const addToLocalStorage = (newItems) => {
+    try {
+      // Get existing food items from local storage (if any)
+      const existingItems = localStorage.getItem("foodItems");
+      const existingItemsArray = existingItems ? JSON.parse(existingItems) : [];
+  
+      // Generate IDs for new items and add them to the existing items array
+      newItems.forEach((newItem) => {
+        const newItemWithId = { ...newItem, id: generateUniqueId() };
+        existingItemsArray.push(newItemWithId);
+      });
+  
+      // Save the updated items array back to local storage
+      localStorage.setItem("foodItems", JSON.stringify(existingItemsArray));
+    } catch (error) {
+      console.error("Error adding food items:", error);
+    }
+  };
+  
 
   return (
     <form onSubmit={handleSubmit} className="outer-div">
@@ -225,9 +247,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, ma
           fetchFoodItemNames={fetchFoodItemNames}
           activeInputId={activeInputId}
           handleSelect={handleSelect}
-          lists={lists}
           handleCreateOption={handleCreateOption}
-          maxListId={maxListId}
         />
       ))}
       <div>

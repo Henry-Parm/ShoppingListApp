@@ -13,10 +13,9 @@ export default function FormElements({
   showDropdown,
   activeInputId,
   handleSelect,
-  lists,
   handleCreateOption,
-
 }) {
+  const {lists} = useLists()
   // console.log(lists)
   const foodTypes = lists
     .slice(0, lists.length - 1)
