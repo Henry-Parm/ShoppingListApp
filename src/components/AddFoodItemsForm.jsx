@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, serverTimestamp, doc, writeBatch } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
+// import { useLists } from "../contexts/ListsContext";
 import { database } from "../FirebaseConfig";
 import FormElements from "./FormElements";
 import axios from "axios";
@@ -21,6 +22,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, ma
     },
   ]);
   // console.log(lists)
+  console.log(inputSets)
   const spoonacularApiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
   const fetchFoodItemNames = async (query) => {
@@ -78,8 +80,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, ma
       setInputSets((prevInputSets) =>
         prevInputSets.map((set) => {
           if (set.id === setId) {
-            console.log({ ...set, listId: option.value, option: option });
-            // console.log({ ...set, option: option, listId: option.value})
+
             return { ...set, listId: option.value, option: option };
           }
           return set;
@@ -155,7 +156,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, ma
       (lists, inputSet) => {
         const newItem = {
           name: inputSet.name,
-          listId: inputSet.listId || 1,
+          listId: inputSet.listId || 2,
           duration: inputSet.canAutoActivate ? Number(inputSet.duration) : 0,
           initialDuration: inputSet.canAutoActivate ? inputSet.duration : 0,
           isActive: true,
@@ -166,6 +167,7 @@ const AddFoodItemsForm = ({ onSave, setLists, lists, activeListSize, addList, ma
         newItems.push(newItem);
         activeListSize.current += 1;
         const listToUpdate = lists.find((list) => list.id === newItem.listId);
+        // console.log(listToUpdate)
         listToUpdate.items.push(newItem);
 
         return lists;

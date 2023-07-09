@@ -10,12 +10,13 @@ export function SortableItem(props) {
     transform: CSS.Transform.toString(transform),
     transition,
     position: "relative",
-    touchAction: "none",
+    // touchAction: "none"
   };
 
   return (
     <div ref={setNodeRef} style={style}>
       <svg
+        style={{touchAction: "none"}}
         className="draggable-area"
         viewBox="0 0 20 20"
         width="12"

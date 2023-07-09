@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useMemo}from "react";
 import {
   DndContext,
   closestCenter,
@@ -13,6 +13,7 @@ import {
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
   verticalListSortingStrategy,
+  rectSortingStrategy
 } from "@dnd-kit/sortable";
 import { SortableItem } from "./SortableItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,6 +27,7 @@ import {
   faBreadSlice,
 } from "@fortawesome/free-solid-svg-icons";
 import FoodItemList from "./FoodItemList";
+// import { useLists } from "../contexts/ListsContext";
 
 export default function DashboardMiddle({
   lists,
@@ -77,17 +79,19 @@ export default function DashboardMiddle({
   );
   function handleDragEnd(event) {
     const { active, over } = event;
-
     if (active.id !== over.id) {
       setLists((items) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
         //change the state to trigger the useEffect
         setListsDragged(!listsDragged);
         return arrayMove(items, oldIndex, newIndex);
       });
     }
   }
+
+  const listIds = useMemo(() => lists.map((list) => list.id), [lists]);
+
   if(isLoading){
     return (<div className="middle-text"><div className="loading-spinner"></div></div>)
   }
@@ -105,22 +109,22 @@ export default function DashboardMiddle({
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={lists}
+          items={listIds}
           strategy={
-            screenWidthMobile
-              ? verticalListSortingStrategy
-              : horizontalListSortingStrategy
+            screenWidthMobile ? verticalListSortingStrategy : rectSortingStrategy
           }
+          
         >
           <div className="middle">
             {lists.map((list, index) => {
-              const listName = list[0];
-              const listItems = list[1];
+              const listName = list.name;
+              const listItems = list.items;
+             const listId = listIds[index];
               if (listItems.length > 0 && listName !== "inactive") {
                 return (
-                  <SortableItem key={index} id={list}>
+                  <SortableItem key={index} id={listId}>
                     <div
-                      className={`food-list list-color${list[2] % 7}`}
+                      className={`food-list list-color${list.color % 7}`}
                       key={index}
                     >
                       <div className="list-title">

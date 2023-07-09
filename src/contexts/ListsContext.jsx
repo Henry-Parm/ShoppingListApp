@@ -16,8 +16,10 @@ export const useLists = () => {
 
 export const ListsProvider = ({ children }) => {
 
+  const number = 10
+
 const value = {
-    
+    number
     };
   
   return (

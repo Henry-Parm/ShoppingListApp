@@ -1,5 +1,6 @@
 import React from "react";
 import CreatableSelect, { useCreatable } from "react-select/creatable";
+import { useLists } from "../contexts/ListsContext";
 
 export default function FormElements({
   formInputs,
@@ -13,17 +14,16 @@ export default function FormElements({
   activeInputId,
   handleSelect,
   lists,
-  index,
   handleCreateOption,
 
 }) {
   // console.log(lists)
   const foodTypes = lists
     .slice(0, lists.length - 1)
-    .filter((list) => list.listName !== 'miscellaneous')
+    .filter((list) => list.name !== 'miscellaneous')
     .map((list) => ({
       value: list.id,
-      label: list.listName.charAt(0).toUpperCase() + list.listName.slice(1),
+      label: list.name.charAt(0).toUpperCase() + list.name.slice(1),
     }));
     const handleBlur = () => {
       setTimeout(() => {
@@ -84,6 +84,7 @@ export default function FormElements({
             />
         </div>
         <div className="checkbox-container">
+          <div className="checkboxText">Auto Return</div>
           <input
             type="checkbox"
             id={`canAutoActivate-${id}`}
@@ -92,7 +93,7 @@ export default function FormElements({
             onChange={(e) => handleChange(e, id)}
             className="checkbox-field"
           />
-          </div>
+        </div>
       </div>
       {formInputs.canAutoActivate && (
         <div className="duration-container">

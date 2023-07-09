@@ -31,7 +31,10 @@ const Dashboard = () => {
   const maxListId = useRef(0);
   const [lists, setLists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(lists)
+  // console.log(lists)
+  // console.log(userOrder)
+  // console.log('inactiveListSize', inactiveListSize.current)
+  // console.log('activeListSize', activeListSize.current)
 
   const handleItemSelection = (item) => {
     setSelectedItems((prevSelectedItems) => {
@@ -80,11 +83,14 @@ const Dashboard = () => {
   }, [userOrder]);
 
   const separateItemsByType = (items, updatedLists) => {
+    // console.log(items)
     items.forEach((item) => {
       const listId = item.listId;
+      // console.log(listId)
       if (item.isActive) {
         activeListSize.current += 1;
-        const listIndex = getListIndex(listId);
+        const listIndex = updatedLists.findIndex((list) => list.id === listId);
+        console.log(listIndex)
         if (listIndex !== -1) {
           updatedLists[listIndex].items.push(item);
         }
@@ -92,10 +98,11 @@ const Dashboard = () => {
         updatedLists[updatedLists.length - 1].items.push(item);
       }
     });
+    // console.log(updatedLists)
     setIsLoading(false);
     setListsReady(true);
     setLists(updatedLists);
-  };
+  }; 
 
   const getListIndex = (listId) => {
     let i = 0;
@@ -109,6 +116,31 @@ const Dashboard = () => {
   };
 
   const isInitialRender = useRef(0);
+
+  useEffect(() => {
+    const newUserOrder = lists.map((list) => {
+      return {name: list.name, color: list.color, id: list.id}
+      
+    });
+    // Check if it's not the initial render
+    if (isInitialRender.current >= 1) {
+      // Call setUserOrder after a delay of 5 seconds if not currently dragging
+      if (!isDragging) {
+        const delay = 5000; // 5 seconds
+        const timeoutId = setTimeout(() => {
+          setUserOrder(newUserOrder);
+          setIsDragging(true);
+          setIsDragging(false);
+        }, delay);
+        // Cleanup function to cancel the timeout if component unmounts or the order changes
+        return () => {
+          clearTimeout(timeoutId);
+        };
+      }
+    } else {
+      isInitialRender.current += 1;
+    }
+  }, [listsDragged]);
 
   const setUserOrder = async (order) => {
     try {
@@ -164,6 +196,8 @@ const Dashboard = () => {
           setManageOverlay={setManageOverlay}
           manageOverlay={manageOverlay}
           getListIndex={getListIndex}
+          setListsDragged={setListsDragged}
+          listsDragged={listsDragged}
         />
         <DashboardMiddle
           lists={lists}
@@ -180,7 +214,13 @@ const Dashboard = () => {
           <ul className="food-list inactive">
             <div className="list-title">Inactive Items</div>
             {listsReady && (
-              <FoodItemList foodItems={lists[lists.length - 1].items} />
+              <FoodItemList
+                foodItems={lists[lists.length - 1].items}
+                handleItemSelection={handleItemSelection}
+                selectedItems={selectedItems}
+                listTitle="Inactive Items"
+                isSorted={true}
+              />
             )}
           </ul>
         </div>

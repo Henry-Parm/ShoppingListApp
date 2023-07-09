@@ -11,6 +11,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import ManageButton from "./ManageButton";
+import { useLists } from "../contexts/ListsContext";
 
 export default function DashboardLeft({
   setLists,
@@ -22,14 +23,18 @@ export default function DashboardLeft({
   maxListId,
   setManageOverlay,
   manageOverlay,
-  getListIndex
+  getListIndex,
+  listsDragged,
+  setListsDragged
 }) {
+  // const {number} = useLists()
+
   const deletedSelected = () => {
     setLists((oldLists) => {
       const toDelete = [];
       const updatedLists = oldLists.map((list) => {
-        const [listName, listItems, color] = list;
-        let newListItems = [...listItems]
+        const {items} = list;
+        let newListItems = [...items]
         newListItems.forEach((item) => {
           if (selectedItems.includes(item)) {
             // console.log("active?", item.isActive)
@@ -41,7 +46,7 @@ export default function DashboardLeft({
         newListItems = newListItems.filter(
           (item) => !selectedItems.includes(item)
         );
-        return [listName, newListItems, color];
+        return {...list, items: newListItems};
       });
       deleteFromDB(toDelete);
       return updatedLists;
@@ -53,9 +58,9 @@ export default function DashboardLeft({
     setLists((oldLists) => {
       let toInactive = [];
       const updatedLists = oldLists.map((list) => {
-        const listName = list[0];
-        let listItems = [...list[1]];
-        const color = list[2]
+        const listName = list.name;
+        let listItems = [...list.items];
+        const color = list.color
         if (listName === "inactive") {
           toInactive = toInactive.map((item) => {
             activeListSize.current -= 1;
@@ -67,7 +72,7 @@ export default function DashboardLeft({
           });
           toInactive.forEach((item) => listItems.push(item));
           modifyActiveDBStatus(toInactive);
-          return [listName, listItems];
+          return {...list, name: listName, items: listItems};
         } else {
           listItems.forEach((item) => {
             if (!selectedItems.includes(item)) {
@@ -77,7 +82,7 @@ export default function DashboardLeft({
               selectedItems.includes(item)
             );
           });
-          return [listName, listItems, color];
+          return {...list, items: listItems};
         }
       });
       return updatedLists;
@@ -89,15 +94,19 @@ export default function DashboardLeft({
     const toDatabase = [];
     setLists((prevLists) => {
       const updatedLists = prevLists.map((list) => {
-        const listName = list[0];
-        let listItems = [...list[1]];
-        const color = list[2]
+        const listName = list.name;
+        let listItems = [...list.items];
         if (listName === "inactive") {
           // Store inactive items to make sure items arent duplcated later
-          const inactiveItemIds = listItems.map((item) => item.id);
-
+          
+          const inactiveItems = listItems.map((item) => {
+            // console.log('item', item.id)
+            return item
+          });
+          // console.log(inactiveItemIds)
           selectedItems.forEach((item) => {
-            if (!inactiveItemIds.includes(item.id)) {
+            if (!inactiveItems.includes(item)) {
+              // console.log(item)
               activeListSize.current -= 1;
               inactiveListSize.current += 1;
               listItems.push(item);
@@ -109,11 +118,11 @@ export default function DashboardLeft({
           listItems = listItems.filter(
             (listItem) =>
               !selectedItems.some(
-                (selectedItem) => selectedItem.id === listItem.id
+                (selectedItem) => selectedItem === listItem
               )
           );
         }
-        return [listName, listItems, color];
+        return {...list, items: listItems};
       });
       modifyActiveDBStatus(toDatabase);
       return updatedLists;
@@ -125,9 +134,8 @@ export default function DashboardLeft({
     setLists((prevLists) => {
       const toDatabase = [];
       let updatedLists = prevLists.map((list) => {
-        const listName = list[0];
-        let listItems = list[1];
-        const color = list[2]
+        const listName = list.name;
+        let listItems = list.items;
         const listItemIds = listItems.map((item) => item.id);
         if (listName === "inactive") {
           listItems = listItems.filter(
@@ -136,7 +144,7 @@ export default function DashboardLeft({
           );
         } else {
           selectedItems.forEach((item) => {
-            if (!listItemIds.includes(item.id) && item.type === listName) {
+            if (!listItemIds.includes(item.id) && item.listId === list.id) {
               activeListSize.current += 1;
               inactiveListSize.current -= 1;
               listItems.push(item);
@@ -145,7 +153,7 @@ export default function DashboardLeft({
             }
           });
         }
-        return [listName, listItems, color];
+        return {...list, items: listItems};
       });
       modifyActiveDBStatus(toDatabase);
       return updatedLists;
@@ -202,12 +210,13 @@ export default function DashboardLeft({
   };
   const addList= (listName) => {
     maxListId.current += 1
-    const newList = {listName: listName, color: maxListId.current, id: maxListId.current, items: []}
+    const newList = {name: listName, color: maxListId.current, id: maxListId.current, items: []}
     setLists((oldLists => {
       let oldListsCopy = [...oldLists]
       oldListsCopy.splice(oldListsCopy.length - 1, 0, newList);
       return oldListsCopy
     }))
+    setListsDragged(!listsDragged);
   }
 
   return (

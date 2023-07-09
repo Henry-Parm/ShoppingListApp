@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const collectionRef = collection(database, "users");
-  const defaultOrder = [{listName: "miscellaneous", color: 1, id: 1},{listName: "inactive", color: 0, id: 0}]; 
+  const defaultOrder = [{name: "miscellaneous", color: 2, id: 2},{name: "inactive", color: 1, id: 1}]; 
   // const defaultOrder = [{listName: "miscellaneous", color: 1},{listName: "inactive", color: 0}]; 
 
   const signup = async (email, firstName, password) => {

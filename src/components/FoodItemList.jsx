@@ -28,7 +28,7 @@ const FoodItemList = ({
     };
   }, []);
   if (isSorted) {
-    foodItems = [...foodItems].sort((a, b) => a.type.localeCompare(b.type));
+    foodItems = [...foodItems].sort((a, b) => a.name.localeCompare(b.name));
   }
   let previousType = "";
 
