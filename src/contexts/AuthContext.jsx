@@ -20,17 +20,17 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userOrder, setUserOrder] = useState([]);
+  const [displayLoggedOutMessage, setDisplayLoggedOutMessage] = useState(false)
   const navigate = useNavigate();
 
   const collectionRef = collection(database, "users");
   const defaultOrder = [{name: "miscellaneous", color: 2, id: 2},{name: "inactive", color: 1, id: 1}]; 
-  // const defaultOrder = [{listName: "miscellaneous", color: 1},{listName: "inactive", color: 0}]; 
 
   const signup = async (email, firstName, password) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       alert("Account created successfully");
-      navigate("/dashboard");
+      navigate("/");
       await addDoc(collectionRef, {
         email: email,
         order: defaultOrder,
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("Logged in successfully");
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       let errorMessage = "";
       switch (error.code) {
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
           name: result.user.displayName,
         });
       }
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     signOut(auth)
       .then(() => {
-        navigate("/");
+        // navigate("/");
       })
       .catch((error) => {
         console.error("Logout error:", error);
@@ -139,6 +139,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     handleGoogleSignIn,
+    displayLoggedOutMessage,
+    setDisplayLoggedOutMessage
   };
 
   return (

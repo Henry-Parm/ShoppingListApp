@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { database } from "../FirebaseConfig";
 import { useAuth } from "./AuthContext";
-
+// console.log('rerender')
 const ListsContext = React.createContext();
 
 export const useLists = () => {
@@ -22,6 +22,11 @@ export const ListsProvider = ({ children }) => {
   const [listsReady, setListsReady] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [listsDragged, setListsDragged] = useState(false);
+  // console.log(activeListSize.current)
+  // console.log(inactiveListSize.current)
+  // console.log(userOrder)
+  // console.log(lists)
+
 
   const handleItemSelection = (item) => {
     setSelectedItems((prevSelectedItems) => {
@@ -38,8 +43,9 @@ export const ListsProvider = ({ children }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    const updatedLists = [];
+    //condition for logged in user. 
     if (userOrder.length > 0) {
+      const updatedLists = [];
       userOrder.forEach((orderObject) => {
         const newOrderObject = { ...orderObject, items: [] };
         updatedLists.push(newOrderObject);
@@ -47,27 +53,51 @@ export const ListsProvider = ({ children }) => {
         if (orderObject.listId > maxListId.current)
           maxListId.current = orderObject.listId;
       });
-
-      const fetchData = async () => {
-        try {
-          const queryItems = await getDocs(
-            query(
-              collection(database, "foodItems"),
-              where("userId", "==", currentUser?.uid)
-            )
-          );
-          const items = [];
-          queryItems.forEach((doc) => {
-            items.push(doc.data());
-          });
-          separateItemsByType(items, updatedLists);
-        } catch (error) {
-          console.error("Error fetching data from database:", error);
-        }
-      };
-      fetchData();
+      fetchData(updatedLists);
+    }
+    //condition for logged OUT user
+    else{
+      const listsString = localStorage.getItem('localLists');
+      const listsData = JSON.parse(listsString);
+      if (listsData === null){
+        console.log('empty lists set')
+        const listsLocal = [{name: "miscellaneous", color: 2, id: 2, items: []},{name: "inactive", color: 1, id: 1, items: []}]
+        const listsString = JSON.stringify(listsLocal);
+        localStorage.setItem('localLists', listsString);
+        setLists(listsLocal)
+        setIsLoading(false)
+      } 
+      else {
+        // console.log('there were lists')
+        setLists(listsData);
+        listsData.forEach((list) => {
+          maxListId.current += 1;
+          if(list.name === 'inactive') inactiveListSize.current += list.items.length
+          else activeListSize.current += list.items.length
+        })
+        setListsReady(true)
+        setIsLoading(false);
+      }
     }
   }, [userOrder]);
+
+  const fetchData = async (updatedLists) => {
+    try {
+      const queryItems = await getDocs(
+        query(
+          collection(database, "foodItems"),
+          where("userId", "==", currentUser?.uid)
+        )
+      );
+      const items = [];
+      queryItems.forEach((doc) => {
+        items.push(doc.data());
+      });
+      separateItemsByType(items, updatedLists);
+    } catch (error) {
+      console.error("Error fetching data from database:", error);
+    }
+  };
 
   const separateItemsByType = (items, updatedLists) => {
     // console.log(items)
@@ -104,7 +134,7 @@ export const ListsProvider = ({ children }) => {
       if (!isDragging) {
         const delay = 5000; // 5 seconds
         const timeoutId = setTimeout(() => {
-          setUserOrder(newUserOrder);
+          // setUserOrder(newUserOrder);
           setIsDragging(true);
           setIsDragging(false);
         }, delay);
@@ -140,6 +170,30 @@ export const ListsProvider = ({ children }) => {
       console.log("Error updating user order in the database", error);
     }
   };
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('localLists', JSON.stringify(lists));
+  });
+
+  const deleteFromDB = async (itemsToDelete) => {
+    try {
+      const itemsRef = collection(database, "foodItems");
+      const batch = writeBatch(database);
+      for (const item of itemsToDelete) {
+        const itemQuery = query(itemsRef, where("id", "==", item.id));
+        const itemDocs = await getDocs(itemQuery);
+        if (!itemDocs.empty) {
+          const itemDoc = itemDocs.docs[0];
+          const itemRef = doc(itemsRef, itemDoc.id);
+  
+          batch.delete(itemRef);
+        }
+      }
+      await batch.commit();
+      console.log("Items deleted successfully from the database");
+    } catch (error) {
+      console.error("Error deleting items from the database:", error);
+    }
+  };
 
   const value = {
     number,
@@ -159,7 +213,8 @@ export const ListsProvider = ({ children }) => {
     listsDragged,
     setListsDragged,
     handleItemSelection,
-    setUserOrder
+    setUserOrder,
+    deleteFromDB
     };
   
   return (

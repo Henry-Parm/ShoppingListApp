@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import "../css/landingPage.css";
-import Navbar from "./Navbar";
+import "../../css/landingPage.css";
+import Navbar from "./../Navbar";
 import SignIn from "./SignIn";
 import CreateUser from "./CreateUser";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function LandingPage() {

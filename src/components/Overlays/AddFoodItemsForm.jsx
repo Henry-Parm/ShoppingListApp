@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { collection, serverTimestamp, doc, writeBatch } from "firebase/firestore";
-import { useAuth } from "../contexts/AuthContext";
-import { useLists } from "../contexts/ListsContext";
-import { database } from "../FirebaseConfig";
+import { useAuth } from "../../contexts/AuthContext";
+import { useLists } from "../../contexts/ListsContext";
+import { database } from "../../FirebaseConfig";
 import FormElements from "./FormElements";
 import axios from "axios";
 
@@ -164,7 +164,7 @@ const AddFoodItemsForm = ({ onSave, addList }) => {
           initialDuration: inputSet.canAutoActivate ? inputSet.duration : 0,
           isActive: true,
           canAutoActivate: inputSet.canAutoActivate,
-          userId: currentUser.uid,
+          userId: currentUser?.uid || null, //added this. User Id needs to be set when it synchronizes
           createdAt: serverTimestamp(),
         };
         newItems.push(newItem);
@@ -190,7 +190,8 @@ const AddFoodItemsForm = ({ onSave, addList }) => {
         canAutoActivate: false,
       },
     ]);
-    addToDb(newItems);
+    if (currentUser) addToDb(newItems);
+    localStorage.setItem('localLists', JSON.stringify(updatedLists));
     onSave();
   };
 
@@ -210,24 +211,24 @@ const AddFoodItemsForm = ({ onSave, addList }) => {
       console.error("Error adding food items:", error);
     }
   };
-  const addToLocalStorage = (newItems) => {
-    try {
-      // Get existing food items from local storage (if any)
-      const existingItems = localStorage.getItem("foodItems");
-      const existingItemsArray = existingItems ? JSON.parse(existingItems) : [];
+  // const addToLocalStorage = (newItems) => {
+  //   try {
+  //     // Get existing food items from local storage (if any)
+  //     const existingItems = localStorage.getItem("foodItems");
+  //     const existingItemsArray = existingItems ? JSON.parse(existingItems) : [];
   
-      // Generate IDs for new items and add them to the existing items array
-      newItems.forEach((newItem) => {
-        const newItemWithId = { ...newItem, id: generateUniqueId() };
-        existingItemsArray.push(newItemWithId);
-      });
+  //     // Generate IDs for new items and add them to the existing items array
+  //     newItems.forEach((newItem) => {
+  //       const newItemWithId = { ...newItem, id: generateUniqueId() };
+  //       existingItemsArray.push(newItemWithId);
+  //     });
   
-      // Save the updated items array back to local storage
-      localStorage.setItem("foodItems", JSON.stringify(existingItemsArray));
-    } catch (error) {
-      console.error("Error adding food items:", error);
-    }
-  };
+  //     // Save the updated items array back to local storage
+  //     localStorage.setItem("foodItems", JSON.stringify(existingItemsArray));
+  //   } catch (error) {
+  //     console.error("Error adding food items:", error);
+  //   }
+  // };
   
 
   return (

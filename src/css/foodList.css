@@ -1,7 +1,7 @@
 .food-list {
     /* border: 1px solid gray; */
     background-color: white;
-    border-radius: 4px;
+    border-radius: 1px;
     height: fit-content;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
    
@@ -35,15 +35,25 @@
     padding: .1em 0;
     background-color: rgba(117, 128, 146, 0.8);
   }
-  .inactive{
-    background-color: #03bff8;
-  }
+ 
   .list-title{
     padding: .05em 0;
     padding-left: 2em;
     margin-top: .1em;
     font-weight:bold;
     color: white
+  }
+  .inactive-list-title{
+    padding: .2em 0;
+    padding-left: 2em;
+    margin-top: .1em;
+    font-weight:bold;
+    color: black
+  }
+  .inactive{
+    background-color: rgba(255, 255, 255, 0.692);
+    /* margin: 1em 0; */
+    color: black;
   }
   .draggable-area{
     position: absolute;

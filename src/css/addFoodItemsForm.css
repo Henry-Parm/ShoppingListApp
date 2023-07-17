@@ -33,11 +33,16 @@
     transform: translateY(-100%);
   }
 }
+.close-button{
+  margin: 3px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
 
 .overlay-content {
   background-color: white;
   border-radius: 5px;
-  border: 2px solid blue;
   margin-bottom: 10em;
 }
 .outer-div{

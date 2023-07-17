@@ -1,13 +1,19 @@
-import React, { useEffect, useRef } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useEffect, useRef } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const IdleTimeout = ({ timeout }) => {
-  const { logout } = useAuth();
+  const { logout, setDisplayLoggedOutMessage } = useAuth();
   const idleTimer = useRef(null);
+
+  const handleTimeout = () =>{
+    setDisplayLoggedOutMessage(true)
+    logout()
+    console.log('logout occured')
+  }
 
   const resetTimer = () => {
     clearTimeout(idleTimer.current);
-    idleTimer.current = setTimeout(logout, timeout);
+    idleTimer.current = setTimeout(handleTimeout, timeout);
   };
 
   useEffect(() => {

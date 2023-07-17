@@ -4,7 +4,7 @@
   justify-content: space-between;
   width: 100%;
   /* background-color: #0bbfbf; */
-  background: linear-gradient(to bottom, #03bff8, lightgray);
+  background:  lightgray;
   box-sizing: border-box;
 }
 .landing-page-header-solid {
@@ -44,7 +44,7 @@
   list-style: none;
   padding: .7em;
   background-color: rgba(255, 255, 255, 0.438);
-  border-radius: 10px;
+  border-radius: 1px;
 }
 .email-576{
   display: none;
@@ -65,10 +65,10 @@
 }
 
 .landing-page-title {
-  font-family: "Pacifico";
+  font-family: "Helvetica";
   font-weight: bold;
   font-size: 2em;
-  color: #be1f47;
+  color: black;
   margin-left: 1em;
   flex-shrink: 1;
   width: 50%;

@@ -1,4 +1,4 @@
-import React , {useMemo}from "react";
+import React , {useEffect, useMemo}from "react";
 import {
   DndContext,
   closestCenter,
@@ -14,7 +14,7 @@ import {
   verticalListSortingStrategy,
   rectSortingStrategy
 } from "@dnd-kit/sortable";
-import { SortableItem } from "./SortableItem";
+import { SortableItem } from "../ListComponents/SortableItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBowlRice,
@@ -25,30 +25,23 @@ import {
   faBasketShopping,
   faBreadSlice,
 } from "@fortawesome/free-solid-svg-icons";
-import FoodItemList from "./FoodItemList";
-import { useLists } from "../contexts/ListsContext";
+import FoodItemList from "../ListComponents/FoodItemList";
+import { useLists } from "../../contexts/ListsContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function DashboardMiddle({
  
 }) {
-  const {number,
-    activeListSize,
+  const {activeListSize,
     inactiveListSize,
-    maxListId,
     lists,
     setLists,
     isLoading,
-    setIsLoading,
     selectedItems,
-    setSelectedItems,
-    listsReady,
-    setListsReady,
-    isDragging,
-    setIsDragging,
     listsDragged,
     setListsDragged,
-    handleItemSelection,
-    setUserOrder} = useLists()
+    handleItemSelection} = useLists()
+    const { currentUser } = useAuth()
 
   const screenWidthMobile = window.innerWidth < 576;
   const noItemsMessage = "No items added. Click 'Add Item' to get started"
@@ -94,7 +87,7 @@ export default function DashboardMiddle({
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
         //change the state to trigger the useEffect
-        setListsDragged(!listsDragged);
+        if (currentUser) setListsDragged(!listsDragged);
         return arrayMove(items, oldIndex, newIndex);
       });
     }
@@ -127,6 +120,7 @@ export default function DashboardMiddle({
         >
           <div className="middle">
             {lists.map((list, index) => {
+              // console.log(list)
               const listName = list.name;
               const listItems = list.items;
              const listId = listIds[index];

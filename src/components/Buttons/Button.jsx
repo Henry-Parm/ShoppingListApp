@@ -1,6 +1,6 @@
 import React from "react";
 
-const MoveItemButton = ({ actionFunction, buttonName }) => {
+const Button = ({ actionFunction, buttonName }) => {
   const handleClick = () => {
     actionFunction();
   };
@@ -12,4 +12,4 @@ const MoveItemButton = ({ actionFunction, buttonName }) => {
   );
 };
 
-export default MoveItemButton;
+export default Button;

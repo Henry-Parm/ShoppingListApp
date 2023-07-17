@@ -1,8 +1,8 @@
 import React from "react";
 import "./css/App.css";
-import "./components/CreateUser";
+import "./components/AuthComponents/CreateUser";
 import { AuthProvider } from "./contexts/AuthContext";
-import IdleTimeout from "./components/IdleTimeout";
+import IdleTimeout from "./components/AuthComponents/IdleTimeout";
 import Router from "./Router";
 
 function App() {

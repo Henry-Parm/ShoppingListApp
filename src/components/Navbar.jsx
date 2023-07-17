@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import "../css/navbar.css";
 import "../css/fonts.css";
 import Icon from "../assets/images/shopping-bag.png";
-import Logout from "./Logout";
+import Logout from "./AuthComponents/Logout";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar({ setResetOpen }) {
   const [isOpen, setIsOpen] = useState(false)
   const { currentUser } = useAuth();
   const location = useLocation();
-  const isLandingPage = location.pathname === "/";
+  const isLoginPage = location.pathname === "/login";
   const email = currentUser?.email
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -23,7 +25,7 @@ export default function Navbar({ setResetOpen }) {
     <div>
       <div
         className={`navbar ${
-          isLandingPage ? "landing-page-header-solid" : "landing-page-header"
+          isLoginPage ? "landing-page-header-solid" : "landing-page-header"
         }`}
       >
         <h1 className="landing-page-title">My Grocery List</h1>
@@ -32,11 +34,10 @@ export default function Navbar({ setResetOpen }) {
             {email}
           </div>
           <ul className={isOpen ? "nav-links open" : "nav-links"}>
-            {currentUser ? <Logout /> : null}
+            {currentUser ? <Logout /> : <li className="logout-button" onClick={() => (navigate('/login'))}>Login</li>}
             <li>Contact</li>
-            {currentUser ? (
-              <li onClick={resetOpenHandler}>Reset</li>
-            ) : null}
+            <li onClick={resetOpenHandler}>Reset</li>
+          
           </ul>
           <div className="hamburger" onClick={toggleMenu}>
             <div className="line"></div>

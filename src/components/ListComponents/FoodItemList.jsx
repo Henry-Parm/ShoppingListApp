@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import FoodItem from "./FoodItem";
-import { useLists } from "../contexts/ListsContext";
+import { useLists } from "../../contexts/ListsContext";
 
 const FoodItemList = ({
   foodItems,
   isSorted,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const {  handleItemSelection, selectedItems } = useLists()
+  const {  handleItemSelection, selectedItems, lists } = useLists()
 
   const handleCheckboxChange = (item) => {
     handleItemSelection(item);
@@ -25,21 +25,23 @@ const FoodItemList = ({
     };
   }, []);
   if (isSorted) {
-    foodItems = [...foodItems].sort((a, b) => a.name.localeCompare(b.name));
+    foodItems = [...foodItems].sort((a, b) => a.listId - b.listId);
   }
-  let previousType = "";
+  let previousListName = "";
 
   return (
     <div className="food-list">
       {foodItems.map((item, index) => {
-        const { type } = item;
-        const shouldRenderType = type !== previousType;
-        previousType = type;
+        const { listId } = item;
+        const list = lists.find((list) => list.id === listId);
+        const listName = list ? list.name : '';
+        const shouldRenderType = listName !== previousListName;
+        previousListName = listName;
 
         return (
-          <React.Fragment key={index}>
+          <div key={index}>
             {shouldRenderType && isSorted && (
-              <div className="inactive-list-titles">{type}</div>
+              <div className="inactive-list-titles">{listName}</div>
             )}
             <FoodItem
               item={item}
@@ -50,7 +52,7 @@ const FoodItemList = ({
               handleMouseDown={handleMouseDown}
               handleMouseUp={handleMouseUp}
             />
-          </React.Fragment>
+          </div>
         );
       })}
     </div>

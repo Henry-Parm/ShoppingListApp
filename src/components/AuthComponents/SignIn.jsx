@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import "../css/login-signup.css";
+import { useAuth } from "../../contexts/AuthContext";
+import "../../css/login-signup.css";
 
 function SignIn() {
   const { login, handleGoogleSignIn } = useAuth();

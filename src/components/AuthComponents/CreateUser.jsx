@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 //DB dependencies. Might be needed elsewhere
-import "../css/login-signup.css";
-import { useAuth } from "../contexts/AuthContext";
+import "../../css/login-signup.css";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function CreateUser() {
   const { signup } = useAuth();
