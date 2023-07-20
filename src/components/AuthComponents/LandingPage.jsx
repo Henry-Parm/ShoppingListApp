@@ -18,7 +18,7 @@ function LandingPage() {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="landing-page-hero">
         <div className="overlay">
           <p className="my-content">

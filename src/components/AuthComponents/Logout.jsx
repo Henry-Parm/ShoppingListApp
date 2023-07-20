@@ -39,9 +39,9 @@ const LogoutButton = () => {
   };
 
   return (
-    <li onClick={handleLogout} className="logout-button">
+    <button onClick={handleLogout} className="menu-button">
       Logout
-    </li>
+    </button>
   );
 };
 

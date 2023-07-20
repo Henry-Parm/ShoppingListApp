@@ -1,45 +1,61 @@
 import React, { useState } from "react";
 import "../css/navbar.css";
 import "../css/fonts.css";
-import Icon from "../assets/images/shopping-bag.png";
 import Logout from "./AuthComponents/Logout";
+import AddFoodItemButton from "./Buttons/AddFoodItemButton";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import logo from '../assets/images/logo.svg'
+import DashboardLogic from "./Dashboard/DashboardLogic";
 
-export default function Navbar({ setResetOpen }) {
-  const [isOpen, setIsOpen] = useState(false)
+export default function Navbar({ setResetOpen,setManageOverlay, manageOverlay, resetOpen, isOpen, setIsOpen }) {
   const { currentUser } = useAuth();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const email = currentUser?.email
   const navigate = useNavigate();
 
+  const {deleteSelected,
+    moveToInactiveListInverse,
+    moveToInactiveList,
+    moveToActiveList,
+    addList,
+    handleLoginNav,
+    handleResetOverlay,
+    handleManageOverlay} = DashboardLogic({setManageOverlay,
+      manageOverlay,
+      resetOpen,
+      setResetOpen})
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-  const resetOpenHandler = () => {
-    setResetOpen(true)
-  }
+
   return (
-    <div>
+    <div className="navbar-main">
       <div
         className={`navbar ${
           isLoginPage ? "landing-page-header-solid" : "landing-page-header"
         }`}
       >
-        <h1 className="landing-page-title">My Grocery List</h1>
+        <div className="logo-div"><img src={logo} alt="" /></div>
         <nav className="landing-page-nav">
           <div className="email" style={{ marginRight: "2em" }}>
             {email}
           </div>
           <ul className={isOpen ? "nav-links open" : "nav-links"}>
-            {currentUser ? <Logout /> : <li className="logout-button" onClick={() => (navigate('/login'))}>Login</li>}
-            <li>Contact</li>
-            <li onClick={resetOpenHandler}>Reset</li>
+            <AddFoodItemButton addList={addList}/>
+            <button className="menu-button" onClick={moveToInactiveList}>Set Inactive</button>
+            <button className="menu-button" onClick={moveToActiveList}>Set Active</button>
+            <button className="menu-button" onClick={moveToInactiveListInverse}>Deactivate Unselected</button>
+            <button className="menu-button" onClick={deleteSelected}>Delete Selected</button>
+            <button className="menu-button" onClick={handleManageOverlay}>Manage Lists</button>
+            <button className="menu-button" onClick={handleResetOverlay}>Reset</button>
+            {currentUser ? <Logout /> : <button className="menu-button" onClick={() => (navigate('/login'))}>Login</button>}
           
           </ul>
-          <div className="hamburger" onClick={toggleMenu}>
+          <div className={isOpen ? "hamburger open" : "hamburger"} onClick={toggleMenu}>
             <div className="line"></div>
             <div className="line"></div>
             <div className="line"></div>

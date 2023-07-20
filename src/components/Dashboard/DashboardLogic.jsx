@@ -2,6 +2,7 @@
 import { useLists } from "../../contexts/ListsContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { database } from "../../FirebaseConfig";
+import { useNavigate } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -11,7 +12,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 
-export default function DashboardLogic({}) {
+export default function DashboardLogic({resetOpen, setResetOpen, manageOverlay, setManageOverlay}) {
     const {activeListSize,
         inactiveListSize,
         maxListId,
@@ -25,6 +26,18 @@ export default function DashboardLogic({}) {
   const { currentUser } = useAuth();
 
 //  console.log(lists)
+
+const navigate = useNavigate();
+
+    const handleManageOverlay = () =>{
+      setManageOverlay(!manageOverlay)
+    }
+    const handleResetOverlay = () => {
+      setResetOpen(!resetOpen)
+    }
+    const handleLoginNav = () => {
+      navigate('/login')
+    }
 
 const deleteFromDB = async (itemsToDelete) => {
   try {
@@ -225,5 +238,8 @@ const deleteFromDB = async (itemsToDelete) => {
     moveToInactiveList,
     moveToActiveList,
     addList,
+    handleLoginNav,
+    handleResetOverlay,
+    handleManageOverlay
   };
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLists } from '../../contexts/ListsContext'
+import '../../css/ManageLists.css'
 
 export default function ManageLists({manageOverlay}) {
   const {lists, setLists} = useLists();

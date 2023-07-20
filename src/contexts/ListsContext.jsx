@@ -171,7 +171,11 @@ export const ListsProvider = ({ children }) => {
     }
   };
   window.addEventListener('beforeunload', () => {
-    localStorage.setItem('localLists', JSON.stringify(lists));
+    //not sure if this is needed for production or if this error only occured in testing
+    if(!lists.some((list) => list.name === 'inactive')){
+      localStorage.removeItem('localLists');
+    } 
+    else localStorage.setItem('localLists', JSON.stringify(lists));
   });
 
   const deleteFromDB = async (itemsToDelete) => {

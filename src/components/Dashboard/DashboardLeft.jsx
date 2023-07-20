@@ -1,9 +1,10 @@
 import React from "react";
 import AddFoodItemButton from "./../Buttons/AddFoodItemButton";
 import Button from "../Buttons/Button";
+import Logout from "../AuthComponents/Logout"
 import DashboardLogic from "./DashboardLogic";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import logo from '../../assets/images/logo.svg'
 
 export default function DashboardLeft({
   setManageOverlay,
@@ -16,24 +17,19 @@ export default function DashboardLeft({
     moveToInactiveListInverse,
     moveToInactiveList,
     moveToActiveList,
-    addList} = DashboardLogic({})
-    const navigate = useNavigate();
-
-    const handleSetManageOverlay = () =>{
-      setManageOverlay(!manageOverlay)
-    }
-    const resetOpenHandler = () => {
-      setResetOpen(!resetOpen)
-    }
-    const handleLoginNav = () => {
-      navigate('/login')
-    }
+    addList,
+    handleLoginNav,
+    handleResetOverlay,
+    handleManageOverlay} = DashboardLogic({setManageOverlay,
+      manageOverlay,
+      resetOpen,
+      setResetOpen})
 
   return (
     <div className="left">
       <div className="info-tab">
-        <div>My Shopping List</div>
-        {currentUser ? <div>currentUser.email</div> : <div>something</div>}
+        <div className="logo-div"><img src={logo} alt="" /></div>
+        {currentUser ? <div className="user-div">{currentUser.email}</div> : null}
       </div>
       <AddFoodItemButton
         addList={addList}
@@ -55,14 +51,14 @@ export default function DashboardLeft({
         buttonName="Delete Selected"
       />
       <Button
-        actionFunction={handleSetManageOverlay}
+        actionFunction={handleManageOverlay}
         buttonName='Manage Lists'
         />
         <Button
-          actionFunction={resetOpenHandler}
+          actionFunction={handleResetOverlay}
           buttonName='Reset'
         />
-        {currentUser ? null : 
+        {currentUser ? <Logout/> : 
         <Button
           actionFunction={handleLoginNav}
           buttonName='Login'

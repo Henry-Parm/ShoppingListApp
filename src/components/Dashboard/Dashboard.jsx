@@ -1,7 +1,8 @@
-import React, {  useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useLists } from "../../contexts/ListsContext";
 import { useAuth } from "../../contexts/AuthContext";
 import "../../css/dashboard.css";
+import "../../css/dashboard-left.css";
 import "../../css/addFoodItemsForm.css";
 import "../../css/foodList.css";
 import DashboardMiddle from "./DashboardMiddle";
@@ -13,10 +14,29 @@ import ManageLists from "../Overlays/ManageLists";
 
 const Dashboard = () => {
   const [resetOpen, setResetOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
   const [manageOverlay, setManageOverlay] = useState(false);
   const {lists,
     listsReady, inactiveListSize} = useLists()
   // console.log(lists)
+  
+
+  useEffect(() => {
+    const hamburgerButton = document.querySelector('.hamburger');
+    const dropdownMenu = document.querySelector('.menu-button');
+    const overLayContent = document.querySelector('.overlay-content');
+
+    const closeMenu = (event) => {
+      if (!dropdownMenu.contains(event.target) && !hamburgerButton.contains(event.target) /*&& !overLayContent.contains(event.target)*/) {
+        // console.log('went')
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('click', closeMenu);
+    return () => {
+      document.removeEventListener('click', closeMenu);
+    }
+  }, [])
   
   return (
     <div>
@@ -25,10 +45,16 @@ const Dashboard = () => {
         setResetOpen={setResetOpen}
         resetOpen={resetOpen}
       />
-      {/* <NavBar
+      <NavBar
         setResetOpen={setResetOpen}
-      ></NavBar> */}
+        setManageOverlay={setManageOverlay}
+        manageOverlay={manageOverlay}
+        resetOpen={resetOpen}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      ></NavBar>
       <div className="container">
+        
         <DashboardLeft
           setManageOverlay={setManageOverlay}
           manageOverlay={manageOverlay}
