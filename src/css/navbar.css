@@ -3,19 +3,9 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  /* background-color: #0bbfbf; */
   background:  transparent;
   box-sizing: border-box;
 }
-/* .landing-page-header-solid {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  background: linear-gradient(to bottom, #e5f6fc, rgb(105, 160, 158));
-  box-sizing: border-box;
-  padding-bottom: .5em;
-} */
 
 .landing-page-nav {
   display: flex;
@@ -27,17 +17,6 @@
   box-sizing: border-box;
 }
 
-/* .landing-page-nav li:last-child {
-  margin-right: 0;
-}
-
-.landing-page-nav ul {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  margin: 0;
-} */
-
 .nav-links {
   display: flex;
   width: 100%;
@@ -46,42 +25,11 @@
   background-color: rgba(255, 255, 255, 0.438);
   border-radius: 1px;
 }
-.email-576{
-  display: none;
-}
 .nav-links.open {
   display: flex;
   width: 12em;
   border: 1px solid black;
 }
-
-/* .nav-links li {
-  margin-right: 20px;
-  font-family: "Helvetica";
-  font-size: 16px;
-  font-weight: bold;
-  color: black;
-  cursor: pointer;
-} */
-
-/* .landing-page-title {
-  font-family: "Helvetica";
-  font-weight: bold;
-  font-size: 2em;
-  color: black;
-  margin-left: 1em;
-  flex-shrink: 1;
-  width: 50%;
-} */
-/* .landing-page-title-landing {
-  font-family: "Pacifico";
-  font-weight: bold;
-  font-size: 2em;
-  color: rgb(28, 38, 126);
-  margin-left: 1em;
-  flex-shrink: 1;
-  width: 50%;
-} */
 
 .line {
   width: 20px;
@@ -136,12 +84,6 @@
       border-radius: 2%;
   }
   
-  /* .nav-links {
-      display: flex;
-      list-style: none;
-      text-align: center;
-  } */
-  
   .nav-links li {
       font-family: "Helvetica";
       font-size: 16px;
@@ -171,16 +113,17 @@
   }
 }
 @media (max-width: 576px) {
-  .email{
-    display: none;
-  }
+
   .email-576{
+    font-size: small;
     color: black;
     display: block;
     text-align: center;
-    background-color: lightgray;
     width: 100%;
     padding: 2px;
+    white-space: nowrap; /*??*/
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .landing-page-title {
     font-size: 1.5em;

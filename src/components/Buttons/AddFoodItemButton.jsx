@@ -7,8 +7,7 @@ const AddFoodItemButton = ({
   
   const [showOverlay, setShowOverlay] = useState(false);
   const [showElement, setShowElement] = useState(false);
-
-  // console.log('rerender')
+  
 
   const handleClick = () => {
     setShowElement(true);

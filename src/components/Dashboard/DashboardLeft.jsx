@@ -1,5 +1,4 @@
 import React from "react";
-import AddFoodItemButton from "./../Buttons/AddFoodItemButton";
 import Button from "../Buttons/Button";
 import Logout from "../AuthComponents/Logout"
 import DashboardLogic from "./DashboardLogic";
@@ -10,7 +9,9 @@ export default function DashboardLeft({
   setManageOverlay,
   manageOverlay,
   resetOpen,
-  setResetOpen
+  setResetOpen,
+  setShowItemOverlay,
+  addItemClick
 }) {
   const { currentUser } = useAuth()
   const {deleteSelected,
@@ -25,14 +26,19 @@ export default function DashboardLeft({
       resetOpen,
       setResetOpen})
 
+    
+
   return (
     <div className="left">
       <div className="info-tab">
         <div className="logo-div"><img src={logo} alt="" /></div>
         {currentUser ? <div className="user-div">{currentUser.email}</div> : null}
       </div>
-      <AddFoodItemButton
+      <Button
+        setShowItemOverlay={setShowItemOverlay}
+        actionFunction={addItemClick}
         addList={addList}
+        buttonName="Add Item"
       />
       <Button
         actionFunction={moveToInactiveList}

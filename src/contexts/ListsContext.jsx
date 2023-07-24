@@ -198,6 +198,16 @@ export const ListsProvider = ({ children }) => {
       console.error("Error deleting items from the database:", error);
     }
   };
+  const addList= (listName) => {
+    maxListId.current += 1
+    const newList = {name: listName, color: maxListId.current, id: maxListId.current, items: []}
+    setLists((oldLists => {
+      let oldListsCopy = [...oldLists]
+      oldListsCopy.splice(oldListsCopy.length - 1, 0, newList);
+      return oldListsCopy
+    }))
+    setListsDragged(!listsDragged);
+  }
 
   const value = {
     number,
@@ -218,7 +228,8 @@ export const ListsProvider = ({ children }) => {
     setListsDragged,
     handleItemSelection,
     setUserOrder,
-    deleteFromDB
+    deleteFromDB,
+    addList
     };
   
   return (

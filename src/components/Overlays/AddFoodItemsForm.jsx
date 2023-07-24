@@ -6,7 +6,7 @@ import { database } from "../../FirebaseConfig";
 import FormElements from "./FormElements";
 import axios from "axios";
 
-const AddFoodItemsForm = ({ onSave, addList }) => {
+const AddFoodItemsForm = ({ onSave, showItemOverlay, showElement }) => {
   const [autofillOptions, setAutofillOptions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeInputId, setActiveInputId] = useState(null);
@@ -24,7 +24,7 @@ const AddFoodItemsForm = ({ onSave, addList }) => {
   const {activeListSize,
     maxListId,
     lists,
-    setLists} = useLists()
+    setLists, addList} = useLists()
 
   const spoonacularApiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
@@ -211,27 +211,16 @@ const AddFoodItemsForm = ({ onSave, addList }) => {
       console.error("Error adding food items:", error);
     }
   };
-  // const addToLocalStorage = (newItems) => {
-  //   try {
-  //     // Get existing food items from local storage (if any)
-  //     const existingItems = localStorage.getItem("foodItems");
-  //     const existingItemsArray = existingItems ? JSON.parse(existingItems) : [];
-  
-  //     // Generate IDs for new items and add them to the existing items array
-  //     newItems.forEach((newItem) => {
-  //       const newItemWithId = { ...newItem, id: generateUniqueId() };
-  //       existingItemsArray.push(newItemWithId);
-  //     });
-  
-  //     // Save the updated items array back to local storage
-  //     localStorage.setItem("foodItems", JSON.stringify(existingItemsArray));
-  //   } catch (error) {
-  //     console.error("Error adding food items:", error);
-  //   }
-  // };
   
 
   return (
+    <>
+    {showItemOverlay ? <div className={`input-overlay${showElement ? "" : " fade-out"}`}>
+          <div className="overlay-content">
+            <button className="close-button" onClick={onSave}> 
+              X
+            </button>
+          
     <form onSubmit={handleSubmit} className="outer-div">
       {inputSets.map((inputSet, index) => (
         <FormElements
@@ -249,6 +238,7 @@ const AddFoodItemsForm = ({ onSave, addList }) => {
           activeInputId={activeInputId}
           handleSelect={handleSelect}
           handleCreateOption={handleCreateOption}
+          
         />
       ))}
       <div>
@@ -264,6 +254,10 @@ const AddFoodItemsForm = ({ onSave, addList }) => {
         </button>
       </div>
     </form>
+      
+    </div>
+  </div> : null}
+    </>
   );
 };
 

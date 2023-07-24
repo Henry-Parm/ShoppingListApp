@@ -1,26 +1,11 @@
 
-/* .landing-page-hero img{
-    max-width: 90%;
-    min-width: 90%;
-    height: auto;
-    right: 0;
-    padding: 1em 0em;
-    position: absolute;
-  } */
-  /* .landing-page-hero{
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    background-image: url('../assets/images/mainPageImage.jpg');
-    background-size: cover;
-    background-position: center center;
-    height: 100vh;
-    min-height: 200px;
-  } */
+
   .input-container-landing{
     margin-top: 14em;
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
   }
   .overlay{
     position: absolute;
